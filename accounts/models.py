@@ -60,7 +60,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    fullname = models.CharField()
+    fullname = models.CharField(max_length=150)
     birth_date = models.DateField(null=True, blank=True)
     mobile_validator = RegexValidator(regex = r'^09\d{9}$',  message='شماره موبایل باید با 09 شروع شود، شامل فقط اعداد باشد و 11 رقم داشته باشد',)
     mobile = models.CharField(max_length=11, validators=[mobile_validator], unique=True)
@@ -115,7 +115,7 @@ class Address(models.Model):
     city = models.ForeignKey(City,on_delete=models.CASCADE,null=True, blank=True)
     postal_code_validator = RegexValidator(regex = r'^[1-9]\d{9}$', message='کد پستی باید 10 کارکتر عددی باشد',)
     postal_code = models.CharField(max_length=10, validators=[postal_code_validator], null=True, blank=True)
-    recipient = models.CharField(max_length="100")
+    recipient = models.CharField(max_length=100)
     complete_address = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

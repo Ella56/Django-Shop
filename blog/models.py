@@ -11,7 +11,7 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     status = models.BooleanField(default=True)
 
 
@@ -27,19 +27,16 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
     
-
     def truncate_chars(self):
         return self.content[:100]
     
-
-
     def get_comments(self):
         return self.comments.filter(status = True)
 
 
 
 
-class Comment(models.Model):
+class Blog_Comment(models.Model):
     blog = models.ForeignKey(Blog,on_delete=models.CASCADE, related_name='comments')
     name = models.ForeignKey(Profile,on_delete=models.CASCADE)
     subject = models.CharField(max_length=200)
@@ -49,15 +46,16 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default = False)
 
-
+    def __str__(self):
+        return self.name.user.email
 
     def get_replies(self):
         return self.replies.filter(status = True)
 
 
 
-class Reply(models.Model):
-    comment = models.ForeignKey(Comment,on_delete=models.CASCADE, related_name='replies')
+class Blog_Reply(models.Model):
+    comment = models.ForeignKey(Blog_Comment,on_delete=models.CASCADE, related_name='replies')
     name = models.ForeignKey(Profile,on_delete=models.CASCADE)
     subject = models.CharField(max_length=200)
     email = models.EmailField()
@@ -65,3 +63,6 @@ class Reply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default = False)
+
+    def __str__(self):
+        return self.name.user.email
