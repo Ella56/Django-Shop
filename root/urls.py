@@ -3,7 +3,7 @@ from .views import HomeView,ContactView
 
 
 
-app_name = 'home'
+app_name = 'root'
 
 
 urlpatterns =[

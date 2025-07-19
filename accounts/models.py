@@ -60,12 +60,14 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
     birth_date = models.DateField(null=True, blank=True)
     mobile_validator = RegexValidator(regex = r'^09\d{9}$',  message='شماره موبایل باید با 09 شروع شود، شامل فقط اعداد باشد و 11 رقم داشته باشد',)
     mobile = models.CharField(max_length=11, validators=[mobile_validator], unique=True)
     id_code_validator = RegexValidator(regex = r'^\d{10}$',  message=' کد ملی باید 10 کارکتر عددی باشد و تکراری نباشد',)
-    id_code = models.CharField(max_length=10, validators=[id_code_validator], unique=True)
+    id_code = models.CharField(max_length=10, validators=[id_code_validator], unique=True,null=True,
+    blank=True)
     phone_validator = RegexValidator(regex = r'^0[1-8]\d{9}$',message='تلفن ثابت باید با 0 و پیش شماره شهرستان باشد و 11 رقم داشته باشد', )
     phone = models.CharField(max_length=20,validators=[phone_validator])
     card_num_validator = RegexValidator(regex= r'^\d{16}$',message='شماره کارت باید 16 کارکتر عددی باشد',)

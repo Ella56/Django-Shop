@@ -5,7 +5,7 @@ app_name = "cart"
 
 
 
-urlpattern = [
+urlpatterns = [
 
     
 ]

@@ -7,7 +7,7 @@ app_name = "payment"
 
 
 
-urlpattern = [
+urlpatterns = [
 
     
 ]

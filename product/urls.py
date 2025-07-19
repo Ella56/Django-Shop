@@ -8,7 +8,7 @@ app_name = "product"
 
 
 
-urlpattern = [
+urlpatterns = [
 
     
 ]
