@@ -66,8 +66,7 @@ class Profile(models.Model):
     mobile_validator = RegexValidator(regex = r'^09\d{9}$',  message='شماره موبایل باید با 09 شروع شود، شامل فقط اعداد باشد و 11 رقم داشته باشد',)
     mobile = models.CharField(max_length=11, validators=[mobile_validator], unique=True)
     id_code_validator = RegexValidator(regex = r'^\d{10}$',  message=' کد ملی باید 10 کارکتر عددی باشد و تکراری نباشد',)
-    id_code = models.CharField(max_length=10, validators=[id_code_validator], unique=True,null=True,
-    blank=True)
+    id_code = models.CharField(max_length=10, validators=[id_code_validator], unique=True)
     phone_validator = RegexValidator(regex = r'^0[1-8]\d{9}$',message='تلفن ثابت باید با 0 و پیش شماره شهرستان باشد و 11 رقم داشته باشد', )
     phone = models.CharField(max_length=20,validators=[phone_validator])
     card_num_validator = RegexValidator(regex= r'^\d{16}$',message='شماره کارت باید 16 کارکتر عددی باشد',)

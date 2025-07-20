@@ -35,7 +35,7 @@ class LoginView(FormView):
 
 
 
-class RegisterView(CreateView):
+class SignupView(CreateView):
     template_name = 'registration/register.html'
     form_class = SignupForm
 
@@ -64,7 +64,7 @@ class RegisterView(CreateView):
                 return redirect(f'/accounts/edit-profile/{user.id}/')
         except Exception as e:
             print(f"Error during registration: {e}")
-            messages.add_message(self.request, messages.ERROR, 'خطایی در ثبت‌نام رخ داد')
+            # messages.add_message(self.request, messages.ERROR, 'خطایی در ثبت‌نام رخ داد')
             return redirect(self.request.path_info)
        
        
@@ -86,6 +86,7 @@ class LogoutView(LoginRequiredMixin,TemplateView):
 
 class ViewProfile(LoginRequiredMixin,TemplateView):
     template_name = 'accounts/view-profile.html'
+    login_url = reverse_lazy('accounts:login')
 
 
 

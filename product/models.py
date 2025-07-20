@@ -25,7 +25,7 @@ class Gauarnty(models.Model):
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=120,unique=True)
+    name = models.CharField(max_length=120,unique=True)
     parent = models.ForeignKey(
         'self', 
         on_delete=models.CASCADE, 
@@ -73,6 +73,8 @@ class Product(models.Model):
     color = models.ManyToManyField(Color, blank=True)
     price = models.PositiveBigIntegerField()
     quantity = models.PositiveBigIntegerField(default=0)
+    total_views = models.PositiveBigIntegerField(default=0)
+    total_favorites = models.PositiveBigIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

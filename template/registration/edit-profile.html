@@ -49,11 +49,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="شماره کارت"> شماره کارت :</label>
-                                        <input type="text" name="card_number" class="form-control" value="{{ profile.card_number }}">
+                                        <input type="text" name="card_number" class="form-control" value="{{ profile.card_num }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="تاریخ تولد"> تاریخ تولد :</label>
-                                        <input type="date" name="birthday" class="form-control" value="{{ profile.birthday|date:'Y-m-d'|default:'' }}">
+                                        <input type="date" name="birthday" class="form-control" value="{{ profile.birth_date|date:'Y-m-d'|default:'' }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="تلفن ثابت"> تلفن ثابت  :</label>
@@ -91,11 +91,11 @@
                                     </div> 
                                     <div class="form-group">
                                         <label for="شماره کارت"> شماره کارت :</label>
-                                        <input type="text" name="card_number" class="form-control" required>
+                                        <input type="text" name="card_num" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="تاریخ تولد"> تاریخ تولد :</label>
-                                        <input type="date" name="birthday" class="form-control">
+                                        <input type="date" name="birth_date" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="تلفن ثابت"> تلفن ثابت  :</label>
