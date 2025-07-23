@@ -4,6 +4,7 @@ from .models import Product, Comment
 from .forms import CommentFrom,RepliesForm
 from django.contrib import messages
 from accounts.models import Profile
+from django.db.models import Q
 
 # Create your views here.
 
@@ -32,8 +33,45 @@ class ProductListView(ListView):
         context["last_products"] = self.model.objects.all().order_by('-created_at')[:3]
         context["product_count"] = self.model.objects.all().count()
         return context
+    
 
 
+    def get_queryset(self):
+        if self.request.GET.get('search'):
+            return Product.objects.filter(name__contains = self.request.GET.get('serach'))
+        categories = self.request.GET.getlist('category')
+        category_detail = self.request.GET.get('detail-category')
+        if categories:
+            query = Q()
+            for category in categories:
+                query |= Q(category__id=category)
+                query |= Q(category__parent__id=category)
+                query |= Q(category__parent__parent__id=category)
+            
+            
+            return Product.objects.filter(query)
+        
+        if category_detail:
+            return Product.objects.filter(category__name=category_detail)
+        
+
+        max_price = self.request.GET.get('max-price')
+        min_price = self.request.GET.get('min-price')
+
+        if min_price and max_price:
+            try:
+                min_price = int(min_price)
+                max_price = int(max_price)
+                return Product.objects.filter(price__gte=min_price,price__lte=max_price)
+            except ValueError:
+                pass
+
+        guaranty = self.request.GET.get('guaranty')
+        if guaranty == "true":
+            return Product.objects.filter(has__guaranty=True)
+        
+
+        return Product.objects.all()
 
 
 
