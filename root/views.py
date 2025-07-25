@@ -10,8 +10,10 @@ class HomeView(TemplateView):
 
 
 
-
-
-
 class ContactView(TemplateView):
     template_name = 'root/contact.html'
+
+
+
+class AboutView(TemplateView):
+    template_name = 'root/about.html'

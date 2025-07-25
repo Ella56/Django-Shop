@@ -27,9 +27,9 @@
             <div class="row">
                 <div class="col-8 d-none d-md-block">
                     <ul>
-                        <li><a href="./index.html">صفحه نخست</a></li>
-                        <li><a href="./about.html">درباره ما</a></li>
-                        <li><a href="./contact.html">تماس با ما</a></li>
+                        <li><a href={% url 'root:home' %}>صفحه نخست</a></li>
+                        <li><a href={% url 'root:about' %}>درباره ما</a></li>
+                        <li><a href={% url 'root:contact' %}>تماس با ما</a></li>
                     </ul>
                 </div>
                 <div class="col-12 col-md-4 text-center text-md-end" id="top-support-info">
@@ -57,8 +57,12 @@
                 <div class="col-12 col-md-4">
                     <div class="row">
                         <div class="col-12 col-md-7 col-lg-6 text-center" id="btn-login-register">
-                            <a href="./login.html">ورود</a> /
-                            <a href="./register.html">عضویت</a>
+                            {% if request.user.is_authenticated %}
+                            <a href="#">{{ profile.first_name}} {{ profile.last_name}}</a>
+                            {% else %}
+                            <a href={% url 'accounts:login' %}>ورود</a> 
+                            <a href={% url 'accounts:signup' %}>عضویت</a>
+                            {% endif %}
                         </div>
                         <div class="col-12 col-md-5 col-lg-6">
                             <a href="./cart.html">
@@ -301,7 +305,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li><a href="./about.html">درباره ما<em class="droopmenu-topanim"></em></a></li>
+                                            <li><a href={% url 'root:about' %}>درباره ما<em class="droopmenu-topanim"></em></a></li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
                                                 <a href="./products.html" aria-expanded="false">صفحات فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
@@ -311,10 +315,10 @@
                                                 </ul>
                                             </li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
-                                                <a href="./contact.html" class="active" aria-expanded="false">تماس با فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
+                                                <a href={% url 'root:contact' %} class="active" aria-expanded="false">تماس با فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
                                                     <li><a href="./faq.html">سوالات متداول</a></li>
-                                                    <li><a href="./contact.html">تماس با ما</a></li>
+                                                    <li><a href={% url 'root:contact' %}>تماس با ما</a></li>
                                                 </ul>
                                             </li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
@@ -342,8 +346,8 @@
                                             <li class="droopmenu-parent" aria-haspopup="true">
                                                 <a href="profile/personal-info.html" aria-expanded="false">پروفایل کاربری<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href="register.html">عضویت در سایت</a></li>
-                                                    <li><a href="login.html">ورود به سایت</a></li>
+                                                    <li><a href={% url 'accounts:signup' %}>عضویت در سایت</a></li>
+                                                    <li><a href={% url 'accounts:login' %}>ورود به سایت</a></li>
                                                     <li><a href="forget-password.html">بازنشانی رمز عبور</a></li>
                                                     <li class="dm-bottom-separator"></li>
                                                     <li><a href="profile/personal-info.html">مشخصات کاربری</a></li>

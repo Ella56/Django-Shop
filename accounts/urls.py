@@ -12,5 +12,6 @@ urlpatterns = [
     path("signup/",SignupView.as_view(),name='signup'),
     path("view-profile/", ViewProfile.as_view(),name="view-profile"),
     path("edit-profile/<int:pk>/",UpdateProfileView.as_view(),name='edit-profile'),
+    path("view-profile/<int:pk>/", ViewProfile.as_view(), name='view-profile'),
 
 ]

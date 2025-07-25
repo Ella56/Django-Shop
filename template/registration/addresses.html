@@ -43,8 +43,8 @@
                                                     <img src="{%  static ' assets/images/user-no-image.jpg' %}" class="rounded-circle">
                                                 </span>
                                                 <span class="col-7 col-sm-8 col-lg-7 pt-0 pt-sm-2 pt-md-3 pt-lg-0 align-self-center">
-                                                    <div id="full-name">مصطفی کلانتری</div>
-                                                    <div class="mt-2" id="email-mobile">09351234567</div>
+                                                    <div id="full-name">{{profile.first_name}} {{profil.lastname}} </div>
+                                                    <div class="mt-2" id="email-mobile">{{profile.mobile}}</div>
                                                 </span>
                                             </span>
                                         </button>
@@ -53,7 +53,7 @@
                                         <div class="accordion-body">
                                             <ul>
                                                 <li>
-                                                    <a href="personal-info.html" class="active">
+                                                    <a href={% url 'accounts:view-profile' %}  class="active">
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{% static ' assets/images/icons/profile-menu/profile.webp' %}" class="pl-2"></div> اطلاعات حساب
                                                         </div>
@@ -82,7 +82,7 @@
                                                 </li>
                                                 <li><hr></li>
                                                 <li>
-                                                    <a href="../index.html">
+                                                    <a href={% url 'accounts:logout %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/exit.webp' %}" class="pl-2"></div> خروج از حساب
                                                         </div>
@@ -108,11 +108,13 @@
                                             <div class="row">
                                                 <div class="col-12 col-md-4 pl-2">
                                                     <div class="form-group m-1">
+                                                        <form method="post"></form>
                                                         <label for="province">استان:</label>
                                                         <select name="province" id="province" class="form-control">
                                                             <option value="tehran">تهران</option>
-                                                            <option value="fars">فارس</option>
-                                                            <option value="esfehan">اصفهان</option>
+                                                            {% for province in provinces %}
+                                                                <option value={{province.id}}>{{province.name}}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                 </div>

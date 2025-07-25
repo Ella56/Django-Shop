@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView,CreateView, TemplateView, UpdateView
-from .forms import LoginForm, SignupForm, EditProfileForm
+from .forms import LoginForm, SignupForm, EditProfileForm, AddressForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import User, Profile
+from .models import User, Profile, Province, City
+from product.models import Product, Compare, Favorites
 from django.contrib.auth.mixins import LoginRequiredMixin
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -64,6 +67,7 @@ class SignupView(CreateView):
                 return redirect(f'/accounts/edit-profile/{user.id}/')
         except Exception as e:
             print(f"Error during registration: {e}")
+            print(f"Profile id_code: {user.profile.id_code}")
             # messages.add_message(self.request, messages.ERROR, 'خطایی در ثبت‌نام رخ داد')
             return redirect(self.request.path_info)
        
@@ -85,15 +89,15 @@ class LogoutView(LoginRequiredMixin,TemplateView):
     
 
 class ViewProfile(LoginRequiredMixin,TemplateView):
-    template_name = 'accounts/view-profile.html'
+    template_name = 'registration/view-profile.html'
     login_url = reverse_lazy('accounts:login')
 
 
 
 class UpdateProfileView(LoginRequiredMixin,TemplateView):
-    template_name = 'accounts/edit-profile.html'
+    template_name = 'registration/edit-profile.html'
     form_class = EditProfileForm
-    success_url = 'accounts/view-profile.html'
+    success_url = '/accounts/view-profile/'
 
     # def get(self, request, *args, **kwargs):
     #     user = self.request.user
@@ -141,3 +145,35 @@ class UpdateProfileView(LoginRequiredMixin,TemplateView):
 
 
 
+class SetAddressView(LoginRequiredMixin, CreateView):
+    template_name = 'registration/addresses.html'
+    form_class = AddressForm
+    success_url = '/accounts/profile/addresses'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['provinces'] = Province.objects.all()
+        return context
+    
+
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        profile_id = get_object_or_404(Profile, user=user).id
+        if request.POST.get('profile')  != str(profile_id):
+            messages.error(self.request, "شما مجاز به ویرایش این پروفایل نیستید")
+        return super().post(request, *args ,**kwargs)
+    
+
+
+    def form_valid(self, form):
+        form.save()
+        messages.add_message(self.request, messages.success, 'آدرس شما با موفقیت ثبت شد.')
+        return redirect(self.success_url)
+    
+
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, f"{form.errors}")
+        return redirect(self.request.path_info)

@@ -75,7 +75,6 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_edited = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.user.email
     
