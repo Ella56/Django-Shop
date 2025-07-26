@@ -82,6 +82,7 @@ class SignupView(CreateView):
 
 
 class LogoutView(LoginRequiredMixin,TemplateView):
+
     def get(self, request, *args, **kwargs):
         logout(request)
         messages.add_message(self.request, messages.SUCCESS, "خروج شما با موفقیت انجام شد")
@@ -158,15 +159,6 @@ class SetAddressView(LoginRequiredMixin, CreateView):
     
 
 
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
-        profile_id = get_object_or_404(Profile, user=user).id
-        if request.POST.get('profile')  != str(profile_id):
-            messages.error(self.request, "شما مجاز به ویرایش این پروفایل نیستید")
-        return super().post(request, *args ,**kwargs)
-    
-
-
     def form_valid(self, form):
         form.save()
         messages.add_message(self.request, messages.success, 'آدرس شما با موفقیت ثبت شد.')
@@ -177,3 +169,20 @@ class SetAddressView(LoginRequiredMixin, CreateView):
     def form_invalid(self, form):
         messages.add_message(self.request, f"{form.errors}")
         return redirect(self.request.path_info)
+    
+
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        profile_id = get_object_or_404(Profile, user=user).id
+        if request.POST.get('profile')  != str(profile_id):
+            messages.error(self.request, "شما مجاز به ویرایش این پروفایل نیستید")
+        return super().post(request, *args ,**kwargs)
+    
+
+def get_city(request):
+    province_id = request.GET.get('province_id')
+    if province_id:
+        cities = City.objects.filter(province = province_id).values('id','name')
+        return JsonResponse(list(cities), safe=False)
+    return JsonResponse([] ,safe=False)
