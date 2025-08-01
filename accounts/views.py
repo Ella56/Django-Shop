@@ -224,7 +224,7 @@ class CompareView(LoginRequiredMixin,ListView):
     
 
 @csrf_exempt
-def create_compare(request):
+def compare_create(request):
     if not request.user.is_authenticated:
         return JsonResponse({"success": False, "message": "ابتدا وارد شوید!"}, status=400)
     if request.method == "POST":
@@ -274,7 +274,7 @@ class FavoriteView(LoginRequiredMixin, ListView):
     
 
 @csrf_exempt
-def create_favorites(request):
+def favorites_create(request):
     if not request.user.is_authenticated:
         return JsonResponse({"success": False, "message": "ابتدا وارد شوید!"}, status=400)
     if request.method == 'POST':
@@ -293,7 +293,7 @@ def create_favorites(request):
     return JsonResponse({"message": "خطای نا مشخص!"}, status=400)
 
 @login_required
-def remove_favorites(request, pk):
+def favorites_remove(request, pk):
     try:
         user = request.user
         profile = get_object_or_404(Profile,user=user)

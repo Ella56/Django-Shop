@@ -15,8 +15,8 @@
                             <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="../index.html">صفحه نخست</a></li>
-                                    <li class="breadcrumb-item"><a href="#">ناحیه کاربری</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'accounts:view-profile' %}>ناحیه کاربری</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">محصولات مورد علاقه</li>
                                 </ol>
                             </nav>

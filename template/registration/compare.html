@@ -14,7 +14,7 @@
                             <p>محصولات را با هم مقایسه کنید.</p>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="./index.html">صفحه نخست</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">مقایسه محصول</li>
                                 </ol>
                             </nav>
@@ -33,31 +33,23 @@
                         <div class="col-12">
                             <div id="products-compared">
                                 <div class="row mt-2 bg-white">
+                                    
+                                    {% for comparison in comparisons %}
                                     <div class="col-3 px-2 pb-2 products-compare-item">
                                         <div class="bg-light p-2 text-center">
-                                            <div class="btn btn-sm btn-outline-secondary btn-cancel-compare float-left rounded-circle">X</div>
-                                            <div><img src="{% static 'assets/images/products/p100.png' %}" alt=""></div>
-                                            <div class="title">گوشی موبایل سامسونگ مدل Galaxy A51</div>
+                                            <a href="#" class="remove-from-compare" data-id="{{ comparison.product.id }}"><div class="btn btn-sm btn-outline-secondary btn-cancel-compare float-left rounded-circle">X</div></a>
+                                            <div><img src={{comparison.product.img1.url}} alt=""></div>
+                                            <div class="title">{{comparison.product.name}}</div>
                                             <div class="price-container">
-                                                <span class="price">6.000.000 <span>تومان</span></span>
+                                               {% if comparison.product.has_discount %}
+                                                <span class="price">{{compare.product.get_discounted_price|intcomma}} تومان</span>
+                                                {% else %}
+                                                <span class="price">{{compare.product.price}} تومان</span>
+                                                {% endif %}
+
                                             </div>
                                             <div class="cta-container">
-                                                <a href="product.html">
-                                                    <div class="btn btn-sm btn-primary px-3 px-lg-2 px-xl-4">مشاهده و خرید محصول</div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-3 px-2 pb-2 products-compare-item">
-                                        <div class="bg-light p-2 text-center">
-                                            <div class="btn btn-sm btn-outline-secondary btn-cancel-compare float-left rounded-circle">X</div>
-                                            <div><img src="{% static 'assets/images/products/p103.png' %}" alt=""></div>
-                                            <div class="title">گوشی موبایل شیائومی مدل POCO X3</div>
-                                            <div class="price-container">
-                                                <span class="price">3.000.000 <span>تومان</span></span>
-                                            </div>
-                                            <div class="cta-container">
-                                                <a href="product.html">
+                                                <a href={% url 'product:product-detail' pk = comparison.product.id %}>
                                                     <div class="btn btn-sm btn-primary px-3 px-lg-2 px-xl-4">مشاهده و خرید محصول</div>
                                                 </a>
                                             </div>
