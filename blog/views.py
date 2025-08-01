@@ -4,6 +4,7 @@ from .models import Blog, Blog_Comment,Blog_Reply,Tag
 from accounts.models import User, Profile
 from django.contrib import messages
 from product.models import *
+from .forms import CommentForm, ReplyForm
 
 
 # Create your views here.
@@ -34,6 +35,7 @@ class BlogDetailView(DetailView):
     model = Blog
     template_name = 'blog/blog-post.html'
     context_object_name = 'blog'
+    queryset = Blog.objects.filter(status=True)
 
     def get(self, request, *args, **kwargs):
         blog = self.get_object()
@@ -48,3 +50,75 @@ class BlogDetailView(DetailView):
         context['most_views'] = Blog.objects.filter(status=True).order_by('-total_views')[:4]
         context['most_views_product'] = Product.objects.filter(total_views__gte=0).order_by('-total_views')[:4]
         return context
+    
+
+
+class CreateCommentView(CreateView):
+    form_class = CommentForm
+
+    def get(self, request, *args, **kwargs):
+        blog = get_object_or_404(Blog, pk=kwargs['pk'])
+        return redirect(f'blog/blog-details/{blog.pk}')
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+        blog = get_object_or_404(Blog, pk=kwargs['pk'])
+        user = request.user
+        email = user.email
+        profile = Profile.objects.get(user=user)
+        form = self.get_form()
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.blog = blog
+            comment.name = profile
+            comment.email = email
+            comment.save()
+            messages.success(
+                request,
+                'کامنت شما دریافت شد . در صورت تایید مدیر سایت نمایش داده می شود',
+            )
+            return redirect('blog:blog-details', pk=blog.pk)
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'خطا در ارسال کامنت')
+        return super().form_invalid(form)
+
+
+
+class CreateReplayView(FormView):
+    form_class = ReplyForm
+
+    def get(self, request, *args, **kwargs):
+        comment = get_object_or_404(Comment, pk=kwargs['pk'])
+        return redirect('blog:blog-details', pk=comment.blog.pk)
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+        comment = get_object_or_404(Comment, pk=kwargs['pk'])
+        user = request.user
+        email = user.email
+        profile = Profile.objects.get(user=user)
+        form = self.get_form()
+        if form.is_valid():
+            replay = form.save(commit=False)
+            replay.comment = comment
+            replay.name = profile
+            replay.email = email
+            replay.save()
+            messages.success(
+                request,
+                'پاسخ شما دریافت شد . در صورت تایید مدیر سایت نمایش داده می شود',
+            )
+            return redirect('blog:blog-details', pk=comment.blog.pk)
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'خطا در ارسال پاسخ')
+        return super().form_invalid(form)
+
+

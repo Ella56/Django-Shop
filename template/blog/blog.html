@@ -14,7 +14,7 @@
                             <p>بلاگ آموزشی روبیک مارکت</p>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="./index.html">صفحه نخست</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">بلاگ آموزشی</li>
                                 </ol>
                             </nav>
@@ -39,141 +39,24 @@
                                         </div>
                                         <div class="container px-2 pb-3">
                                             <div class="row row-cols-1 row-cols-md-2">
-                                                <!-- Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post100.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">بررسی آیفون 12 پرو مکس اپل</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">آیفون ۱۲ پرو مکس با ابعاد غول‌پیکر، دوربین توانمندتر و باتری حجمیش، تمام‌عیارترین پرچم‌دار کنونی اپل به‌حساب می‌آید.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
                                                 <!-- /Blog Post -->
+                                                 {% for blog in blogs %}
                                                 <div class="col">
                                                     <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post101.jpg')"></div></a>
+                                                        <a href={% url 'blog:blog-detail' pk=blog.id %}><div class="post-image" style="background-image: url('{{blog.image.url}}')"></div></a>
                                                         <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">سامسونگ گلکسی S21 اولترا 5G</h2>
+                                                            <div class="post-date">ارسال شده {{blog.created_at}}</div>
+                                                            <a href={% url 'blog:blog-detail' pk=blog.id %}>
+                                                                <h2 class="post-title">{{blog.title}}</h2>
                                                             </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">سامسونگ برای گوشی پرچم‌دارش، یعنی گلکسی S21 اولترا 5G، علاوه‌بر رنگ‌های قبلی، رنگ جدید سرمه‌ای را معرفی کرد.</div>
+                                                            <a href={% url 'blog:blog-detail' pk=blog.id %}>
+                                                                <div class="post-description">{{blog.content}}</div>
                                                             </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
+                                                            <div class="read-more"><a href={% url 'blog:blog-detail' pk=blog.id %} class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Blog Post -->
-                                                <!-- /Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post102.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">دریافت گواهی بلوتوث گلکسی A03s سامسونگ</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">ماه گذشته، برای اولین‌بار اطلاعاتی از گلکسی A03s فاش شد و اکنون با دریافت گواهی بلوتوث، به زمان رونمایی این گوشی نزدیک شده‌ایم.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
-                                                <!-- /Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post103.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">خرابی بی‌دلیل نمایشگرهای سری گلکسی S20</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">ماه گذشته، برای اولین‌بار اطلاعاتی از گلکسی A03s فاش شد و اکنون با دریافت گواهی بلوتوث، به زمان رونمایی این گوشی نزدیک شده‌ایم.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
-                                                <!-- Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post100.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">بررسی آیفون 12 پرو مکس اپل</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">آیفون ۱۲ پرو مکس با ابعاد غول‌پیکر، دوربین توانمندتر و باتری حجمیش، تمام‌عیارترین پرچم‌دار کنونی اپل به‌حساب می‌آید.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
-                                                <!-- /Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post101.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">سامسونگ گلکسی S21 اولترا 5G</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">سامسونگ برای گوشی پرچم‌دارش، یعنی گلکسی S21 اولترا 5G، علاوه‌بر رنگ‌های قبلی، رنگ جدید سرمه‌ای را معرفی کرد.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
-                                                <!-- /Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post102.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">دریافت گواهی بلوتوث گلکسی A03s سامسونگ</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">ماه گذشته، برای اولین‌بار اطلاعاتی از گلکسی A03s فاش شد و اکنون با دریافت گواهی بلوتوث، به زمان رونمایی این گوشی نزدیک شده‌ایم.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Blog Post -->
-                                                <!-- /Blog Post -->
-                                                <div class="col">
-                                                    <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href="./blog-post.html"><div class="post-image" style="background-image: url('assets/images/blog/post103.jpg')"></div></a>
-                                                        <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده در 30 خرداد 1400</div>
-                                                            <a href="./blog-post.html">
-                                                                <h2 class="post-title">خرابی بی‌دلیل نمایشگرهای سری گلکسی S20</h2>
-                                                            </a>
-                                                            <a href="./blog-post.html">
-                                                                <div class="post-description">ماه گذشته، برای اولین‌بار اطلاعاتی از گلکسی A03s فاش شد و اکنون با دریافت گواهی بلوتوث، به زمان رونمایی این گوشی نزدیک شده‌ایم.</div>
-                                                            </a>
-                                                            <div class="read-more"><a href="./blog-post.html" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {% endfor %}
                                                 <!-- Blog Post -->
                                             </div>
                                         </div>
@@ -193,18 +76,19 @@
                                         <div class="container">
                                             <div class="row">
                                                 <!-- Side Panel Product -->
+                                                 {% for ptoduct in most_views_product %}
                                                 <div class="col-12 col-lg-12 px-0 mt-2">
                                                     <a href="./product.html">
                                                         <div class="side-blog-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url(assets/images/products/p100.png)"></div>
+                                                                    <div class="image" style="background-image: url({{product.image.url}})"></div>
                                                                 </div>
                                                                 <div class="col-8 px-0">
-                                                                    <h2>گوشی موبایل سامسونگ مدل Galaxy A51 دو سیم کارت</h2>
+                                                                    <h2>{{product.name}}</h2>
                                                                     <div class="row">
                                                                         <div class="col-8 pl-0">
-                                                                            <span class="price">3.200.000 تومان</span>
+                                                                            <span class="price">{{product.get_discounted_price}}تومان</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -212,69 +96,7 @@
                                                         </div>
                                                     </a>
                                                 </div>
-                                                <!-- /Side Panel Product -->
-                                                <!-- Side Panel Product -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <a href="./product.html">
-                                                        <div class="side-blog-product">
-                                                            <div class="row pl-3">
-                                                                <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url(assets/images/products/p200.png)"></div>
-                                                                </div>
-                                                                <div class="col-8 px-0">
-                                                                    <h2>لپ تاپ 15 اینچی ایسوس مدل VivoBook X543MA-DM905</h2>
-                                                                    <div class="row">
-                                                                        <div class="col-8 pl-0">
-                                                                            <span class="price">3.200.000 تومان</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!-- /Side Panel Product -->
-                                                <!-- Side Panel Product -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <a href="./product.html">
-                                                        <div class="side-blog-product">
-                                                            <div class="row pl-3">
-                                                                <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url(assets/images/products/p300.png)"></div>
-                                                                </div>
-                                                                <div class="col-8 px-0">
-                                                                    <h2>هدفون بی سیم سامسونگ مدل Galaxy Buds Live</h2>
-                                                                    <div class="row">
-                                                                        <div class="col-8 pl-0">
-                                                                            <span class="price">3.200.000 تومان</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!-- /Side Panel Product -->
-                                                <!-- Side Panel Product -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <a href="./product.html">
-                                                        <div class="side-blog-product">
-                                                            <div class="row pl-3">
-                                                                <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url(assets/images/products/p400.png)"></div>
-                                                                </div>
-                                                                <div class="col-8 px-0">
-                                                                    <h2>دوربین دیجیتال کانن مدل EOS 2000D به همراه لنز 18-55 میلی متر</h2>
-                                                                    <div class="row">
-                                                                        <div class="col-8 pl-0">
-                                                                            <span class="price">3.200.000 تومان</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                                {% endfor %}
                                                 <!-- /Side Panel Product -->
                                             </div>
                                         </div>
@@ -288,21 +110,22 @@
                                         <hr>
                                         <div class="container">
                                             <div class="row">
+                                                {% for item in most_views %}
                                                 <!-- Side Panel Post -->
                                                 <div class="col-12 col-lg-12 px-0 mt-2">
                                                     <div class="side-blog-post">
                                                         <div class="row pl-3">
                                                             <div class="col-4 pl-2">
-                                                                <a href="./blog-post.html"><div class="image" style="background-image: url(assets/images/blog/post100.jpg)"></div></a>
+                                                                <a href={% url 'blog:blog-details' pk=item.id %}><div class="image" style="background-image: url({{item.image.url}})"></div></a>
                                                             </div>
                                                             <div class="col-8 px-0">
-                                                                <a href="./blog-post.html"><h2>بررسی آیفون 12 پرو مکس اپل</h2></a>
+                                                                <a href={% url 'blog:blog-details' pk=item.id %}><h2>{{item.title}}</h2></a>
                                                                 <div class="row">
                                                                     <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href="./blog.html">اخبار</a></span>
+                                                                        <span class="category">دسته بندی: <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{item.tags.name}}</a></span>
                                                                     </div>
                                                                     <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">30 خرداد 1400</span>
+                                                                        <span class="date">{{item.created_at}}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -310,72 +133,7 @@
                                                     </div>
                                                 </div>
                                                 <!-- /Side Panel Post -->
-                                                <!-- Side Panel Post -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <div class="side-blog-post">
-                                                        <div class="row pl-3">
-                                                            <div class="col-4 pl-2">
-                                                                <a href="./blog-post.html"><div class="image" style="background-image: url(assets/images/blog/post101.jpg)"></div></a>
-                                                            </div>
-                                                            <div class="col-8 px-0">
-                                                                <a href="./blog-post.html"><h2>سامسونگ گلکسی S21 اولترا 5G</h2></a>
-                                                                <div class="row">
-                                                                    <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href="./blog.html">اخبار</a></span>
-                                                                    </div>
-                                                                    <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">30 خرداد 1400</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /Side Panel Post -->
-                                                <!-- Side Panel Post -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <div class="side-blog-post">
-                                                        <div class="row pl-3">
-                                                            <div class="col-4 pl-2">
-                                                                <a href="./blog-post.html"><div class="image" style="background-image: url(assets/images/blog/post102.jpg)"></div></a>
-                                                            </div>
-                                                            <div class="col-8 px-0">
-                                                                <a href="./blog-post.html"><h2>دریافت گواهی بلوتوث گلکسی A03s سامسونگ</h2></a>
-                                                                <div class="row">
-                                                                    <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href="./blog.html">اخبار</a></span>
-                                                                    </div>
-                                                                    <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">30 خرداد 1400</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /Side Panel Post -->
-                                                <!-- Side Panel Post -->
-                                                <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <div class="side-blog-post">
-                                                        <div class="row pl-3">
-                                                            <div class="col-4 pl-2">
-                                                                <a href="./blog-post.html"><div class="image" style="background-image: url(assets/images/blog/post103.jpg)"></div></a>
-                                                            </div>
-                                                            <div class="col-8 px-0">
-                                                                <a href="./blog-post.html"><h2>خرابی نمایشگرهای سری گلکسی S20</h2></a>
-                                                                <div class="row">
-                                                                    <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href="./blog.html">اخبار</a></span>
-                                                                    </div>
-                                                                    <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">30 خرداد 1400</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- /Side Panel Post -->
+                                               {% endfor %}
                                             </div>
                                         </div>
                                     </div>

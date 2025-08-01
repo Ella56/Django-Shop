@@ -129,8 +129,3 @@ class Address(models.Model):
         verbose_name = 'آدرس'
         verbose_name_plural = 'آدرس ها'
         ordering = ['-created_at']
-
-
-
-
-

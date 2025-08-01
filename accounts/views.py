@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import FormView,CreateView, TemplateView, UpdateView
+from django.views.generic import FormView,CreateView, TemplateView, UpdateView, ListView
 from .forms import LoginForm, SignupForm, EditProfileForm, AddressForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +9,8 @@ from product.models import Product, Compare, Favorites
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -56,20 +58,21 @@ class SignupView(CreateView):
 
 
     def form_valid(self, form):
-        try:
-            form.save()
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password1']
-            user = authenticate(username = email,password = password)
-            if user is not None:
-                login(self.request, user)
-                messages.add_message(self.request,messages.SUCCESS,'شما با موفقیت ثبت‌نام کردید')
-                return redirect(f'/accounts/edit-profile/{user.id}/')
-        except Exception as e:
-            print(f"Error during registration: {e}")
-            print(f"Profile id_code: {user.profile.id_code}")
-            # messages.add_message(self.request, messages.ERROR, 'خطایی در ثبت‌نام رخ داد')
-            return redirect(self.request.path_info)
+        form.save()
+        data = form.cleaned_data
+        email = data['email']
+        password = data['password1']
+        user = authenticate(username=email, password=password)
+        print(user.profile.id)
+        if user is not None:
+            login(self.request, user)
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'ثبت نام موفقیت آمیز . لطفا مشخصات کاربری خود را تکمیل نمایید',
+        )
+        return redirect(f'/accounts/edit-profile/{user.id}/')
+
        
        
 
@@ -186,3 +189,119 @@ def get_city(request):
         cities = City.objects.filter(province = province_id).values('id','name')
         return JsonResponse(list(cities), safe=False)
     return JsonResponse([] ,safe=False)
+
+
+class ResetPassword(FormView):
+    pass
+
+class ResetPasswordDone(TemplateView):
+    template_name = 'registrations/forget-password-done.html'
+
+
+class ResetPasswordConfirm(FormView):
+    pass
+
+
+class ResetPasswordComplete(TemplateView):
+    template_name = 'registrations/forget-password-complete.html'
+
+
+class ChangePassword(LoginRequiredMixin, FormView):
+    pass
+
+class CompareView(LoginRequiredMixin,ListView):
+    template_name = 'redistration.compare.html'
+    model = Compare
+    context_object_name = 'comparisons'
+
+
+
+    def get_queryset(self):
+        user = self.request.user
+        profile = get_object_or_404(Profile, user=user)
+        comparisons = Compare.objects.filter(name=profile)
+        return comparisons
+    
+
+@csrf_exempt
+def create_compare(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"success": False, "message": "ابتدا وارد شوید!"}, status=400)
+    if request.method == "POST":
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        product = Product.objects.get(id=product_id)
+        try:
+            Compare.objects.get(name=profile,  product=product)
+            return JsonResponse({"message": "این محصول قبلا اضافه شده است!"}, status=400)
+        except Compare.DoesNotExist:
+            Compare.objects.create(name=profile,product=product)
+            return JsonResponse({"message": "محصول اضافه شد!"}, status=200)
+    return JsonResponse({"message": "خطای نا مشخص!"}, status=400)
+
+@csrf_exempt
+def compare_remove(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"success": False, "message": "ابتدا وارد شوید!"}, status=400)
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            product_id=data.get('product_id')
+            user=request.user
+            profile = get_object_or_404(Profile, user=user)
+            product = Product.objects.get(id=product_id)
+            compare = Compare.objects.get(name=profile,product=product)
+            compare.delete()
+            return JsonResponse({"success": True, "message": "محصول حذف شد!"}, status=200)
+        except Exception as e:
+            return JsonResponse({"success": False,"message": "خطایی رخ داد . یکبار صفحه را رفرش کنید!"},status=400)
+    return JsonResponse({"message": "متد غیرمجاز!"}, status=405)
+
+
+class FavoriteView(LoginRequiredMixin, ListView):
+    template_name = 'registration/favorits.html'
+    model = Favorites
+    context_object_name = 'favorites'
+
+
+    def get_queryset(self):
+        user = self.request.user
+        profile = get_object_or_404(Profile,user=user)
+        favorites = Favorites.objects.all(name=profile)
+        return favorites
+    
+
+@csrf_exempt
+def create_favorites(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"success": False, "message": "ابتدا وارد شوید!"}, status=400)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        product = Product.objects.get(id = product_id)
+        try:
+            Favorites.objects.get(name=profile,product=product)
+            return JsonResponse({"message": "این محصول قبلا اضافه شده است!"}, status=400)
+        except Favorites.DoesNotExist:
+            Favorites.objects.create(name=profile,product=product)
+            return JsonResponse({"message": "محصول اضافه شد!"}, status=200)
+
+    return JsonResponse({"message": "خطای نا مشخص!"}, status=400)
+
+@login_required
+def remove_favorites(request, pk):
+    try:
+        user = request.user
+        profile = get_object_or_404(Profile,user=user)
+        product = Product.objects.get(id=pk)
+        favorites = Favorites.objects.get(name=profile,product=product)
+        favorites.delete()
+        messages.success(request, 'محصول حذف شد')
+        return redirect('accounts:user-favorties')
+    except Exception as e:
+        messages.error(request, 'خطایی رخ داد . یکبار صفحه را رفرش کنید!')
+        return redirect('accounts:user-favorties')

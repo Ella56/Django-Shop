@@ -10,13 +10,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 px-0">
-                            <h1>گوشی موبایل سامسونگ مدل Galaxy A21s</h1>
-                            <p>دارای قابلیت دو سیم کارته و حافظه 128 گیگا بایت</p>
+                            <h1>{{product.name}}</h1>
+                            <p>{{product.content}}</p>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="./index.html">صفحه نخست</a></li>
-                                    <li class="breadcrumb-item"><a href="./products.html">فروشگاه</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">گوشی موبایل</li>
+                                    <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'product:products' %}>فروشگاه</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{product.category.name}}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -30,30 +30,30 @@
         <div class="row">
             <div class="col-12">
                 <div class="content">
-                    <div class="row">
+                    <div class="row">ت
                         <div class="col-12 col-lg-5 px-lg-0">
                             <div class="swiper-container gallery-top">
                                 <!-- Additional required wrapper -->
                                 <ul class="swiper-wrapper">
                                     <!-- Slides -->
                                     <li id="1" class="swiper-slide">
-                                        <a href="{% static 'assets/images/products/p100.png' %}" itemprop="contentUrl" data-size="900x710">
-                                            <img src="{% static 'assets/images/products/p100.png' %}" itemprop="thumbnail" alt="گوشی موبایل سامسونگ مدل Galaxy A21s" />
+                                        <a href={{product.img1.url}} itemprop="contentUrl" data-size="900x710">
+                                            <img src={{product.img1.url}} itemprop="thumbnail" alt={{product.name}} />
                                         </a>
                                     </li>
                                     <li id="1" class="swiper-slide">
-                                        <a href="{% static 'assets/images/products/p101.png' %}" itemprop="contentUrl" data-size="900x710">
-                                            <img src="{% static 'assets/images/products/p101.png' %}" itemprop="thumbnail" alt="گوشی موبایل سامسونگ مدل Galaxy A21s" />
+                                        <a href={{product.img2.url}} itemprop="contentUrl" data-size="900x710">
+                                            <img src="{{product.img2.url}}" itemprop="thumbnail" alt={{product.name}} />
                                         </a>
                                     </li>
                                     <li id="1" class="swiper-slide">
-                                        <a href="{% static 'assets/images/products/p102.png' %}" itemprop="contentUrl" data-size="900x710">
-                                            <img src="{% static 'assets/images/products/p102.png' %}" itemprop="thumbnail" alt="گوشی موبایل سامسونگ مدل Galaxy A21s" />
+                                        <a href={{product.img3.url}} itemprop="contentUrl" data-size="900x710">
+                                            <img src={{product.img3.url}} itemprop="thumbnail" alt={{product.name}} />
                                         </a>
                                     </li>
                                     <li id="1" class="swiper-slide">
-                                        <a href="{% static 'assets/images/products/p103.png' %}" itemprop="contentUrl" data-size="900x710">
-                                            <img src="{% static 'assets/images/products/p103.png' %}" itemprop="thumbnail" alt="گوشی موبایل سامسونگ مدل Galaxy A21s" />
+                                        <a href={{product.img4.url}} itemprop="contentUrl" data-size="900x710">
+                                            <img src={{product.img4.url}} itemprop="thumbnail" alt={{product.name}} />
                                         </a>
                                     </li>
                                     <!-- /Slides -->
@@ -66,10 +66,10 @@
                             <!-- Swiper -->
                             <div class="swiper-container gallery-thumbs">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide" style="background-image:url('assets/images/products/p100.png')"></div>
-                                    <div class="swiper-slide" style="background-image:url('assets/images/products/p101.png')"></div>
-                                    <div class="swiper-slide" style="background-image:url('assets/images/products/p102.png')"></div>
-                                    <div class="swiper-slide" style="background-image:url('assets/images/products/p103.png')"></div>
+                                    <div class="swiper-slide" style="background-image:url('{{product.img1.url}}')"></div>
+                                    <div class="swiper-slide" style="background-image:url('{{product.img2.url}}')"></div>
+                                    <div class="swiper-slide" style="background-image:url('{{product.img3.url}}')"></div>
+                                    <div class="swiper-slide" style="background-image:url('{{product.img4.url}}')"></div>
                                 </div>
                             </div>
 
@@ -106,14 +106,12 @@
                         </div>
                         <div class="col-12 col-lg-7 mt-5 mt-lg-0 pl-lg-0" id="product-intro">
                             <a href="./product.html">
-                                <h1>گوشی موبایل سامسونگ مدل Galaxy A21s</h1>
+                                <h1>{{peoduct.name}}</h1>
                             </a>
                             <div class="stars-container">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                                {% for star in product.get_average_score|times %}
+                                    <i class="fa fa-star"></i>
+                                {% endfor %}
                                 <a href="#tabs-panel"><span>(نقد و بررسی)</span></a>
                             </div>
                             <div class="price-container py-2">
@@ -121,8 +119,7 @@
                                 <span class="price">3.500.000 <span>تومان</span></span>
                                 <div class="badge badge-danger font-weight-light m-1 py-1 px-2">10%</div>
                             </div>
-                            <p>این یک متن آزمایشی است که به زودی توسط نویسنده این سایت، تکمیل یا حذف خواهد شد. اگر شما نویسنده‌ی این سایت هستید، برای حذف یا ویرایش این صفحه، کافی است از طریق مرکز مدیریت سایت خود وارد بخش مربوطه شده و محتوای این صفحه را ویرایش یا حذف کنید.<br>
-                                صفحات و محتوای آزمایشی همیشه بخشی از محتوای پیش‌نمایش قالب و افزونه های وب هستند که شما بتوانید ارتباط درستی با پیش نمایش قالب گرفته و تصمیم مناسبی بگیرید.</p>
+                            <p>{{product.description}}</p>
                             <hr>
                             <div class="variables">
                                 <div class="title">گزینه های موجود:</div>
