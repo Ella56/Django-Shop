@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView,CreateView, TemplateView, UpdateView, ListView
-from .forms import LoginForm, SignupForm, EditProfileForm, AddressForm
+from .forms import LoginForm, SignupForm, EditProfileForm, AddressForm, ResetPassForm,ResetPassConfirmForm,ChangePassForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -11,6 +11,10 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
+from threading import Thread
+from django.contrib.auth.password_validation import validate_password
+# from .concurrency_processing import send_email
 
 # Create your views here.
 
@@ -195,7 +199,27 @@ def get_city(request):
 
 
 class ResetPassword(FormView):
-    pass
+    success_url = '/accounts/reset-password-done/'
+    template_name = 'registration/forget-password.html'
+    form_class = ResetPassForm
+
+
+    # def form_valid(self, form):
+    #     email = form.cleaned_data['email']
+    #     if User.objects.filter(email=email).exists():
+    #         user = User.objects.get(email=email)
+    #         token = self.get_token_for_user(user)
+    #         t1 = Thread()
+
+
+
+
+
+
+
+
+
+    
 
 class ResetPasswordDone(TemplateView):
     template_name = 'registrations/forget-password-done.html'

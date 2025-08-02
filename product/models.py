@@ -28,7 +28,7 @@ class Category(models.Model):
 
 
     def __str__(self):
-        return (f"{self.parent.name} / {self.name}" if self.parent else {self.name})
+        return (f"{self.parent.name} / {self.name}" if self.parent else self.name)
 
 
 

@@ -28,3 +28,20 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model= Address
         fields = ['user_profile', 'province', 'city', 'postal_code', 'recipient', 'complete_address']
+
+
+
+
+class ResetPassForm(forms.Form):
+    email = forms.EmailField(max_length=150, label= 'Email')
+
+
+class ResetPassConfirmForm(forms.Form):
+    password1 = forms.CharField(widget=forms.PasswordInput, label='New Password')
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+
+
+class ChangePassForm(forms.Form):
+    old_pass = forms.CharField(widget=forms.PasswordInput, label = 'Old Password')
+    password1 = forms.CharField(widget=forms.PasswordInput, label='New Password')
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
