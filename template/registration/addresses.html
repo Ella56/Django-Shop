@@ -82,7 +82,7 @@
                                                 </li>
                                                 <li><hr></li>
                                                 <li>
-                                                    <a href={% url 'accounts:logout %}>
+                                                    <a href={% url 'accounts:logout' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/exit.webp' %}" class="pl-2"></div> خروج از حساب
                                                         </div>
@@ -187,24 +187,7 @@
                                             </div>
                                         </div>
                                         <!-- Address Record -->
-                                        <!-- Address Record -->
-                                        <div class="col-12 address py-2">
-                                            <div class="row">
-                                                <div class="col-12 col-sm-10">
-                                                    <div class="title">تهران، بلوار ولی عصر</div>
-                                                    <div class="sub-title">تهران، تهران</div>
-                                                    <div class="sub-title">1234567890</div>
-                                                    <div class="sub-title">امید کریمی</div>
-                                                    <div class="sub-title">02112345678</div>
-                                                </div>
-                                                <div class="col-12 col-sm-2 text-lg-end">
-                                                    <a href="#" onclick="return confirm('آیا جهت حذف این آدرس اطمینان دارید؟')" class="float-right float-sm-left pr-2 pl-sm-2"><i class="fa fa-trash-alt font-weight-normal"></i></a>
-                                                    <a href="#" class="float-right float-sm-left"><i class="fa fa-edit font-weight-normal"></i></a>
-                                                    <a href="#" class="float-right float-sm-left ml-2" title="آدرس پیش فرض"><i class="fa fa-circle-notch"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Address Record -->
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

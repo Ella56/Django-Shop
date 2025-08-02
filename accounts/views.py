@@ -169,18 +169,21 @@ class SetAddressView(LoginRequiredMixin, CreateView):
     
 
 
-    def form_invalid(self, form):
-        messages.add_message(self.request, f"{form.errors}")
-        return redirect(self.request.path_info)
-    
-
-
     def post(self, request, *args, **kwargs):
         user = self.request.user
         profile_id = get_object_or_404(Profile, user=user).id
         if request.POST.get('profile')  != str(profile_id):
             messages.error(self.request, "شما مجاز به ویرایش این پروفایل نیستید")
         return super().post(request, *args ,**kwargs)
+
+
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, f"{form.errors}")
+        return redirect(self.request.path_info)
+    
+
+
     
 
 def get_city(request):
@@ -210,7 +213,7 @@ class ChangePassword(LoginRequiredMixin, FormView):
     pass
 
 class CompareView(LoginRequiredMixin,ListView):
-    template_name = 'redistration.compare.html'
+    template_name = 'registration/compare.html'
     model = Compare
     context_object_name = 'comparisons'
 
@@ -261,7 +264,7 @@ def compare_remove(request):
 
 
 class FavoriteView(LoginRequiredMixin, ListView):
-    template_name = 'registration/favorits.html'
+    template_name = 'registration/favorites.html'
     model = Favorites
     context_object_name = 'favorites'
 
@@ -269,7 +272,7 @@ class FavoriteView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         profile = get_object_or_404(Profile,user=user)
-        favorites = Favorites.objects.all(name=profile)
+        favorites = Favorites.objects.filter(name=profile)
         return favorites
     
 

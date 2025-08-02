@@ -43,8 +43,8 @@
                                                     <img src="../{%  static ' assets/images/user-no-image.jpg" class="rounded-circle">
                                                 </span>
                                                 <span class="col-7 col-sm-8 col-lg-7 pt-0 pt-sm-2 pt-md-3 pt-lg-0 align-self-center">
-                                                    <div id="full-name">مصطفی کلانتری</div>
-                                                    <div class="mt-2" id="email-mobile">09351234567</div>
+                                                    <div id="full-name">{{profile.first_name}} {{profile.last_name}}</div>
+                                                    <div class="mt-2" id="email-mobile">{{profile.mobile}}</div>
                                                 </span>
                                             </span>
                                         </button>
@@ -53,7 +53,7 @@
                                         <div class="accordion-body">
                                             <ul>
                                                 <li>
-                                                    <a href="personal-info.html" class="active">
+                                                    <a href={% url 'accounts:view-profile' %} class="active">
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/profile.webp' %}" class="pl-2"></div> اطلاعات حساب
                                                         </div>
@@ -67,14 +67,14 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="favorites.html">
+                                                    <a href={% url 'accounts:user-favorites' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/favorites.webp' %}" class="pl-2"></div> علاقه مندی ها
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="addresses.html">
+                                                    <a href={% url 'accounts:addresses' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/addresses.webp' %}" class="pl-2"></div> آدرس های من
                                                         </div>
@@ -82,7 +82,7 @@
                                                 </li>
                                                 <li><hr></li>
                                                 <li>
-                                                    <a href="../index.html">
+                                                    <a href={% url 'accounts:logout' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="{%  static ' assets/images/icons/profile-menu/exit.webp' %}" class="pl-2"></div> خروج از حساب
                                                         </div>
@@ -103,151 +103,31 @@
                                 </div>
                                 <div class="container">
                                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-md-4">
+                                        {% for item in favorites %}
                                         <!-- Products -->
                                         <div class="col">
                                             <!-- Product Box -->
                                             <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p100.png')"></div></a>
+                                                <a href={% url 'product:product-detail' pk=item.product.id %}><div class="image" style="background-image: url('{{item.product.img1.url}}')"></div></a>
                                                 <div class="details p-3">
                                                     <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
+                                                        <a href="#">{{item.product.category.parent}}/{{item.product.category.name}}</a>
                                                         &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
+                                                        <a href={% url 'product:product-detail' pk=item.product.id %}>{{item.product.name}}</a>
                                                     </div>
-                                                    <a href="../product.html"><h2>گوشی موبایل سامسونگ مدل Galaxy A51 دو سیم کارت</h2></a>
-                                                    <div class="price">6.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
+                                                    <a href={% url 'product:product-detail' pk=item.product.id %}><h2>{{item.product.content}}</h2></a>
+                                                    <div class="price">{{item.product.get_discounted_price}} تومان</div>
+                                                    <a href={% url 'accounts:user-remove-favorites' pk=item.product.id %}
+                                                        style="display: inline-block; margin-top: 10px;
+                                                         padding: 8px 12px; background-color: #09a6a6;
+                                                          color: white; text-decoration: none; border-radius: 5px;">
+                                                        حذف از علاقه‌مندی‌ها
+                                                    </a>
                                                 </div>
                                             </div>
                                             <!-- /Product Box -->
                                         </div>
-                                        <div class="col">
-                                            <!-- Product Box -->
-                                            <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p400.png')"></div></a>
-                                                <div class="details p-3">
-                                                    <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
-                                                        &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
-                                                    </div>
-                                                    <a href="../product.html"><h2>دوربین دیجیتال کانن مدل EOS 2000D به همراه لنز 18-55 میلی متر DC III</h2></a>
-                                                    <div class="price">6.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Product Box -->
-                                        </div>
-                                        <div class="col">
-                                            <!-- Product Box -->
-                                            <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p103.png')"></div></a>
-                                                <div class="details p-3">
-                                                    <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
-                                                        &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
-                                                    </div>
-                                                    <a href="../product.html"><h2>گوشی موبایل شیائومی مدل POCO X3 M2007J20CG دو سیم‌ کارت</h2></a>
-                                                    <div class="price">3.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Product Box -->
-                                        </div>
-                                        <div class="col">
-                                            <!-- Product Box -->
-                                            <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p103.png')"></div></a>
-                                                <div class="details p-3">
-                                                    <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
-                                                        &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
-                                                    </div>
-                                                    <a href="../product.html"><h2>گوشی موبایل شیائومی مدل POCO X3 M2007J20CG دو سیم‌ کارت</h2></a>
-                                                    <div class="price">3.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Product Box -->
-                                        </div>
-                                        <div class="col">
-                                            <!-- Product Box -->
-                                            <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p400.png')"></div></a>
-                                                <div class="details p-3">
-                                                    <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
-                                                        &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
-                                                    </div>
-                                                    <a href="../product.html"><h2>دوربین دیجیتال کانن مدل EOS 2000D به همراه لنز 18-55 میلی متر DC III</h2></a>
-                                                    <div class="price">6.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Product Box -->
-                                        </div>
-                                        <div class="col">
-                                            <!-- Product Box -->
-                                            <div class="product-box">
-                                                <a href="../product.html"><div class="image" style="background-image: url('../assets/images/products/p100.png')"></div></a>
-                                                <div class="details p-3">
-                                                    <div class="category">
-                                                        <a href="../products.html">گوشی موبایل</a>
-                                                        &nbsp;/&nbsp;
-                                                        <a href="../products.html">سامسونگ</a>
-                                                    </div>
-                                                    <a href="../product.html"><h2>گوشی موبایل سامسونگ مدل Galaxy A51 دو سیم کارت</h2></a>
-                                                    <div class="price">6.000.000 تومان</div>
-                                                    <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Product Box -->
-                                        </div>
+                                     {% endfor %}
                                     </div>
                                 </div>
                             </div>

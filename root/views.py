@@ -31,3 +31,7 @@ class ContactView(CreateView):
 
 class AboutView(TemplateView):
     template_name = 'root/about.html'
+
+
+class FaqView(TemplateView):
+    template_name = 'root/faq.html'

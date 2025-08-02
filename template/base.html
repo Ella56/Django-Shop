@@ -30,6 +30,16 @@
     </div>
     {% endif %}
 
+    <script>
+        setTimeout(function () {
+            let alerts = document.querySelectorAll('.my-alert');
+            alerts.forEach(alert => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 200); // حذف از DOM بعد از افکت fade
+            });
+        }, 2000); // حذف پیام بعد از ۵ ثانیه
+    </script>    
+
 <!-- Header -->
 <section id="header">
     <!-- Top NavBar -->
@@ -55,15 +65,17 @@
         <div class="container pt-1">
             <div class="row py-3 align-content-center">
                 <div class="col-12 col-md-3 col-xl-2 text-center text-md-start pb-2" id="header-logo">
-                    <a href="./index.html">
+                    <a href={% url 'root:home' %}>
                         <img src="{% static 'assets/images/logo.png' %}" alt=""> روبیک مارکت
                     </a>
                 </div>
                 <div class="col-12 col-md-5 col-xl-6">
-                    <div id="search-bar">
-                        <i class="fa fa-search"></i>
-                        <input type="text" placeholder="جستجو کنید...">
-                    </div>
+                    <form id="myform" action = {% url 'product:product-by-search' %}>
+                        <div id="search-bar">
+                            <i class="fa fa-search"></i>
+                            <input type="text" name="serach" placeholder="جستجو کنید...">
+                        </div>
+                    </form>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="row">
@@ -106,150 +118,38 @@
                                                 <a href="#" aria-expanded="false"><i class="fa fa-bars"></i>&nbsp;&nbsp;گروه های محصولات<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul class="droopmenu-grid droopmenu-grid-9">
                                                     <li class="droopmenu-tabs droopmenu-tabs-vertical">
+                                                        {% for parent in parents %}
                                                         <div class="droopmenu-tabsection droopmenu-tab-active" id="droopmenutab10">
-                                                            <a class="droopmenu-tabheader" href="#">کالای دیجیتال</a>
+                                                            <a class="droopmenu-tabheader" href="#">{{parent.name}}</a>
                                                             <div class="droopmenu-tabcontent">
                                                                 <div class="droopmenu-row">
                                                                     <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>صوت</h4></li>
-                                                                        <li><a href="./products.html">رادیو دیجیتال</a></li>
-                                                                    
-                                                                        <li><h4>گوشی موبایل</h4></li>
-                                                                        <li><a href="./products.html">گوشی موبایل</a></li>
-                                                                  
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>تصویر</h4></li>
-                                                                        <li><a href="products.html">ال سی دی</a></li>
-                                                                    
-                                                                        <li><h4>کنسول بازی</h4></li>
-                                                                        <li><a href="products.html">پلی استیشن 4</a></li>
-                                                                 
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image1.png' %}" alt=""></li>
+                                                                        {% for big_child in parent.subcategories.all %}
+                                                                            <li><h4>{{big_child.name}}</h4></li>
+                                                                                {% for child in big_child.subcategories.all %}
+                                                                                    <li><a href="{% url 'product:products-list-detail' %}?detail-category={{child.name}}">{{child.name}}</a></li>
+                                                                                {% endfor %}
+                                                                        {% endfor %}
                                                                     </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="droopmenu-tabsection" id="droopmenutab11">
-                                                            <a class="droopmenu-tabheader" href="#">لوازم منزل</a>
-                                                            <div class="droopmenu-tabcontent">
-                                                                <div class="droopmenu-row">
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>مبلمان</h4></li>
-                                                                        
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>دکوراسیون</h4></li>
-                                                                       
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image2.png' %}" alt=""></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="droopmenu-tabsection" id="droopmenutab12">
-                                                            <a class="droopmenu-tabheader" href="#">مد  و پوشاک</a>
-                                                            <div class="droopmenu-tabcontent">
-                                                                <div class="droopmenu-row">
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>مردانه</h4></li>
-                                                                        <li><a href="products.html">لباس زیر</a></li>
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>زنانه</h4></li>     
-                                                                        <li><a href="products.html">ساعت</a></li>
-                                                                        <li><a href="products.html">لباس زیر</a></li>
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image3.png' %}" alt=""></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="droopmenu-tabsection" id="droopmenutab13">
-                                                            <a class="droopmenu-tabheader" href="#">فرهنگ و هنر</a>
-                                                            <div class="droopmenu-tabcontent">
-                                                                <div class="droopmenu-row">
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>آلات موسیقی</h4></li>
-                                                                        <li><a href="./products.html">گیتار</a></li>
-                                                                        
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>صنایع دستی</h4></li>
-                                                                        <li><a href="./products.html">کالاهای مسی</a></li>
-                                                                       
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image4.png' %}" alt=""></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="droopmenu-tabsection" id="droopmenutab14">
-                                                            <a class="droopmenu-tabheader" href="#">سلامت و زیبایی</a>
-                                                            <div class="droopmenu-tabcontent">
-                                                                <div class="droopmenu-row">
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>محصولات</h4></li>
-                                                                        <li><a href="products.html">لوازم آرایشی</a></li>
-                                                                       
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>برند ها</h4></li>
-                                                                        <li><a href="products.html">صحت</a></li>
-                                                                   
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image5.png' %}" alt=""></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="droopmenu-tabsection" id="droopmenutab15">
-                                                            <a class="droopmenu-tabheader" href="#">جواهرات</a>
-                                                            <div class="droopmenu-tabcontent">
-                                                                <div class="droopmenu-row">
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>زنانه</h4></li>
-                                                                        <li><a href="./products.html">حلقه ازدواج</a></li>
-                                                                   
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4">
-                                                                        <li><h4>مرانه</h4></li>
-                                                                        <li><a href="./products.html">ساعت</a></li>
-                                                                      
-                                                                    </ul>
-                                                                    <ul class="droopmenu-col droopmenu-col4 d-none d-lg-inline-block">
-                                                                        <li><img src="{% static 'assets/images/megamenu/megamenu-image6.png' %}" alt=""></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        {% endfor %}
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li><a href={% url 'root:about' %}>درباره ما<em class="droopmenu-topanim"></em></a></li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
-                                                <a href="./products.html" aria-expanded="false">صفحات فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
+                                                <a href={% url 'product:products' %} aria-expanded="false">صفحات فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href="./products.html">محصولات <sup>(کاشی کاری)</sup></a></li>
-                                                    <li><a href="./products-list.html">محصولات <sup>(لیست)</sup></a></li>
-                                                    <li><a href="./products.html">جزئیات محصول</a></li>
+                                                    <li><a href={% url 'product:products' %}>(کاشی کاری) <sup>محصولات</sup></a></li>
+                                                    <li><a href={% url 'product:products-list' %}>(لیست) <sup>محصولات</sup></a></li>
                                                 </ul>
                                             </li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
-                                                <a href={% url 'root:contact' %} class="active" aria-expanded="false">تماس با فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
+                                                <a href={% url 'root:contact' %} aria-expanded="false">تماس با فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href="./faq.html">سوالات متداول</a></li>
+                                                    <li><a href={% url 'root:faq' %}>سوالات متداول</a></li>
                                                     <li><a href={% url 'root:contact' %}>تماس با ما</a></li>
                                                 </ul>
                                             </li>
@@ -257,36 +157,33 @@
                                                 <a href={% url 'blog:blog' %} aria-expanded="false">بلاگ آموزشی<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
                                                     <li><a href={% url 'blog:blog' %}>آرشیو مطالب</a></li>
-                                                    <li><a href="./blog-post.html">داخلی بلاگ</a></li>
                                                 </ul>
                                             </li>
+                                            {% if request.user.is_authenticated %}
                                             <li class="droopmenu-parent" aria-haspopup="true">
-                                                <a href="#" aria-expanded="false">سایر صفحات<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
+                                                <a href="#" aria-expanded="false">اطلاعات خرید<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href="./compare.html">مقایسه محصول</a></li>
+                                                    <li><a href={% url 'accounts:user-compare' %}>مقایسه محصول</a></li>
                                                     <li><a href="./cart.html">سبد خرید</a></li>
                                                     <li><a href="./checkout.html">پیش فاکتور</a></li>
-                                                    <li><a href="./thankyou.html">پرداخت موفق</a></li>
-                                                    <li class="dm-bottom-separator"></li>
-                                                    <li><a href={% url 'accounts:login' %}>ورود به سایت</a></li>
-                                                    <li><a href={% url 'accounts:signup' %}>عضویت در سایت</a></li>
-                                                    <li><a href="./reset-password.html">بازگردانی رمز عبور</a></li>
-                                                    <li class="dm-bottom-separator"></li>
-                                                    <li><a href="./error-404.html">خطای 404</a></li>
                                                 </ul>
                                             </li>
+                                            {% endif %}
                                             <li class="droopmenu-parent" aria-haspopup="true">
-                                                <a href="profile/personal-info.html" aria-expanded="false">پروفایل کاربری<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
+                                                <a href={% url 'accounts:view-profile' %} aria-expanded="false">پروفایل کاربری<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href={% url 'accounts:signup' %}>عضویت در سایت</a></li>
-                                                    <li><a href={% url 'accounts:login' %}>ورود به سایت</a></li>
-                                                    <li><a href="forget-password.html">بازنشانی رمز عبور</a></li>
-                                                    <li class="dm-bottom-separator"></li>
-                                                    <li><a href={% url 'accounts:view-profile' %}>مشخصات کاربری</a></li>
-                                                    <li><a href="profile/factors.html">سفارشات</a></li>
-                                                    <li><a href="profile/factor-view.html">مشاهده فاکتور</a></li>
-                                                    <li><a href={% url 'accounts:addresses' %}>آدرس ها</a></li>
-                                                    <li><a href="profile/favorites.html">علاقه مندی ها</a></li>
+                                                    {% if request.user.is_authenticated %}
+                                                        <li><a href={% url 'accounts:view-profile' %}>مشخصات کاربری</a></li>
+                                                        <li><a href="profile/factors.html">سفارشات</a></li>
+                                                        <li><a href="profile/factor-view.html">مشاهده فاکتور</a></li>
+                                                        <li><a href={% url 'accounts:addresses' %}>آدرس ها</a></li>
+                                                        <li><a href="profile/favorites.html">علاقه مندی ها</a></li>
+                                                    {% else %}
+                                                        <li><a href="{% url 'accounts:signup' %}">عضویت در سایت</a></li>
+                                                        <li><a href="{% url 'accounts:login' %}">ورود به سایت</a></li>
+                                                        <li><a href="{% url 'accounts:reset-password' %}">بازنشانی رمز عبور</a></li>
+                                                        <li class="dm-bottom-separator"></li>
+                                                    {% endif %}
                                                 </ul>
                                             </li>
                                         </ul>

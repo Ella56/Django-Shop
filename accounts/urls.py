@@ -10,6 +10,7 @@ app_name = "accounts"
 urlpatterns = [
     path("login/", LoginView.as_view(),name='login'),
     path("signup/",SignupView.as_view(),name='signup'),
+    path("logout/",LogoutView.as_view(),name='logout'),
     path("view-profile/", ViewProfile.as_view(),name="view-profile"),
     path("edit-profile/<int:pk>/",UpdateProfileView.as_view(),name='edit-profile'),
     path("view-profile/<int:pk>/", ViewProfile.as_view(), name='view-profile'),
@@ -20,5 +21,6 @@ urlpatterns = [
     path("favorites/", FavoriteView.as_view(), name="user-favorites"),
     path("create-favorites/", favorites_create, name='user-create-favories'),
     path("remove-favories/<int:pk>/", favorites_remove, name="user-remove-favorites"),
+    path("reset-password/",ResetPassword.as_view(), name='reset-password')
 
 ]
