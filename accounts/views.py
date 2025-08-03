@@ -13,8 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from threading import Thread
+from .concurrency_processing  import send_mail
 from django.contrib.auth.password_validation import validate_password
-# from .concurrency_processing import send_email
+
 
 # Create your views here.
 
@@ -204,20 +205,22 @@ class ResetPassword(FormView):
     form_class = ResetPassForm
 
 
-    # def form_valid(self, form):
-    #     email = form.cleaned_data['email']
-    #     if User.objects.filter(email=email).exists():
-    #         user = User.objects.get(email=email)
-    #         token = self.get_token_for_user(user)
-    #         t1 = Thread()
-
-
-
-
-
-
-
-
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            token = self.get_token_for_user(user)
+            t1 = Thread(target=send_mail, args=('email/email.html', user, token,"admin@my-site.com", user.email),)
+            t1.start()
+            messages.add_message(self.request,messages.SUCCESS,'ایمیل بازیابی رمز عبور ارسال شد',)
+            return super().form_valid()
+        else:
+            messages.add_message(self.request, messages.ERROR, 'این ایمیل در سیستم وجود ندارد')
+            return redirect(self.request.path_info)
+        
+    def get_token_for_user(self,user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
 
     
 
@@ -226,7 +229,36 @@ class ResetPasswordDone(TemplateView):
 
 
 class ResetPasswordConfirm(FormView):
-    pass
+    template_name = 'registration/forget-password-confirm.html'
+    form_class = ResetPassConfirmForm
+    success_url = '/accounts/reset-password-complete/'
+
+    def form_valid(self, form):
+        password1 = form.cleaned_data['password1']
+        password2 = form.cleaned_data['password2']
+
+        if password1 == password2:
+            try:
+                validate_password(password1)
+            except Exception as e:
+                messages.error(self.request,"پسورد باید 8 کارکتر شامل حروف بزرگ و کوچک و علائم باشد  ",)
+                return redirect(self.request.path_info)
+            token = self.kwargs.get('token')
+            try:
+                access_token = AccessToken(token)
+                user_id = access_token['user_id']
+                user = User.objects.get(id=user_id)
+                user.set_password(password1)
+                user.save()
+                messages.add_message(self.request,messages.SUCCESS,'رمز عبور با موفقیت تغییر یافت',)
+                return super().form_valid(form)
+            except Exception as e:
+                messages.error(self.request, "توکن منقضی شده است")
+                return redirect('/accounts/reset-password/')
+        else:
+            messages.error(self.request, "پسوردها با هم مطابقت ندارند")
+            return redirect(self.request.path_info)
+
 
 
 class ResetPasswordComplete(TemplateView):
@@ -234,7 +266,40 @@ class ResetPasswordComplete(TemplateView):
 
 
 class ChangePassword(LoginRequiredMixin, FormView):
-    pass
+    template_name = 'registration/change-password.html'
+    form_class = ChangePassForm
+    success_url = '/accounts/view-profile/'
+
+
+    def form_valid(self, form):
+        old_password = form.cleaned_data['old_password']
+        user = self.request.user
+        if not user.check_password(old_password):
+            messages.error(self.request, "پسورد قدیمی صحیح نمیباشد")
+            return redirect(self.request.path_info)
+        password1 = form.cleaned_data['password1']
+        password2 = form.cleaned_data['password2']
+        if password1 == password2:
+            try:
+                validate_password(password1)
+            except Exception as e:
+                messages.error(self.request,"پسورد باید 8 کارکتر شامل حروف بزرگ و کوچک و علائم باشد  ",)
+                return redirect(self.request.path_info)
+            user.set_password(password1)
+            user.save()
+            messages.add_message(self.request, messages.SUCCESS,'رمز عبور با موفقیت تغییر یافت',)
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, "پسوردها با هم مطابقت ندارند")
+            return redirect(self.request.path_info)
+        
+
+
+    def form_invalid(self, form):
+        messages.error(self.request, f"{form.errors}")
+        return redirect(self.request.path_info)
+
+
 
 class CompareView(LoginRequiredMixin,ListView):
     template_name = 'registration/compare.html'
