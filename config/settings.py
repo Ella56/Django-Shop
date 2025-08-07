@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cart',
     'payment',
     'mail_templated',
+    'django_faker',
    
 ]
 
