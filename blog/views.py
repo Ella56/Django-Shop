@@ -19,7 +19,7 @@ class BlogView(ListView):
 
     def get_queryset(self):
         if self.kwargs.get('tag'):
-            return Blog.objects.filter(tags_name=self.kwargs['tag'], status=True).order_by('-created_at')
+            return Blog.objects.filter(tags__name=self.kwargs['tag'], status=True).order_by('-created_at')
         return Blog.objects.filter(status=True).order_by('-created_at')
     
 
@@ -88,7 +88,7 @@ class CreateCommentView(CreateView):
 
 
 
-class CreateReplayView(FormView):
+class CreateReplyView(FormView):
     form_class = ReplyForm
 
     def get(self, request, *args, **kwargs):
@@ -104,11 +104,11 @@ class CreateReplayView(FormView):
         profile = Profile.objects.get(user=user)
         form = self.get_form()
         if form.is_valid():
-            replay = form.save(commit=False)
-            replay.comment = comment
-            replay.name = profile
-            replay.email = email
-            replay.save()
+            reply = form.save(commit=False)
+            reply.comment = comment
+            reply.name = profile
+            reply.email = email
+            reply.save()
             messages.success(
                 request,
                 'پاسخ شما دریافت شد . در صورت تایید مدیر سایت نمایش داده می شود',

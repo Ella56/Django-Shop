@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
-{% block 'title' %}{% endblock 'title' %}
+{% load humanize %}
+{% load jalali_filters %}
+{% block 'title' %}Products{% endblock 'title' %}
 {% block 'content' %}
 
 <section class="inner-page" id="products-page">
@@ -70,32 +72,33 @@
                                                 <div class="col-12 py-1 px-4 mt-3">
                                                     <div id="steps-slider" dir="rtl"></div>
                                                 </div>
-                                                <div class="col-6 text-center price-range mt-3">
-                                                    <div>از</div>
-                                                    <div id="price-range-from">10000</div>
-                                                    <div>تومان</div>
-                                                </div>
-                                                <div class="col-6 text-center price-range mt-3">
-                                                    <div>از</div>
-                                                    <div id="price-range-to">500000</div>
-                                                    <div>تومان</div>
-                                                </div>
+                                                <form id="price-filter-form" action="{% url 'product:products-list-by-price-range' %}" method="GET">
+                                                    <div class="col-12 py-1 px-4 mt-3">
+                                                        <div id="steps-slider" dir="rtl"></div>
+                                                    </div>
+<!-- سطر برای دو مقدار قیمت -->
+                                                    <div class="col-12 d-flex justify-content-between align-items-center mt-3">
+                                                        <!-- حداقل قیمت -->
+                                                        <div class="price-range d-flex align-items-center">
+                                                            <div>از</div>
+                                                            <div id="price-range-from" class="mx-2">10000</div>
+                                                            <input type="hidden" name="min_price" id="min-price" value="10000">  
+                                                            <div>تومان</div>
+                                                        </div>
+                                                
+                                                        <!-- حداکثر قیمت -->
+                                                        <div class="price-range d-flex align-items-center">
+                                                            <div>تا</div>
+                                                            <div id="price-range-to" class="mx-2">500000</div>
+                                                            <input type="hidden" name="max_price" id="max-price" value="500000">  
+                                                            <div>تومان</div>
+                                                        </div>
+                                                    </div>
+                                               
                                                 <div class="col-12 text-center py-2">
-                                                    <div class="btn btn-warning">اعمال محدوده تخفیف</div>
+                                                    <button type="submit" class="btn btn-warning">اعمال محدوده تخفیف</button>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion filters-container mt-3">
-                                <div class="accordion-item">
-                                    <div id="collapseThree" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body pb-2">
-                                            <div class="form-group">
-                                                <input type="checkbox" id="only-available">
-                                                <label for="only-available">فقط کالاهای موجود</label>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -107,8 +110,13 @@
                                     <div id="collapseFour" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body pb-2">
                                             <div class="form-group">
-                                                <input type="checkbox" id="only-warranty">
-                                                <label for="only-warranty">فقط کالاهای دارای گارانتی</label>
+                                                <form action="{% url 'product:products-list-by-guaranty' %}">
+                                                    <input type="checkbox" id="only-warranty" name="guaranty" value="true">
+                                                    <label for="only-warranty">فقط کالاهای دارای گارانتی</label>
+                                                    <div class="form-group">
+                                                        <input type="submit" value="اعمال فیلتر" class="col-12 text-center py-2">
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -125,23 +133,23 @@
                                     <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                             
+                                               {% for product in last_products %}
                                                 <!-- Side Product -->
                                                 <div class="col-12 col-md-4 col-lg-12 px-0 mt-2">
-                                                    <a href="./product.html">
+                                                    <a href={% url 'product:product-detail' pk=product.id %}>
                                                         <div class="side-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-3 pl-2">
-                                                                    <div class="image" style="background-image: url('assets/images/products/p100.png')"></div>
+                                                                    <div class="image" style="background-image: url({{product.img1.url}})"></div>
                                                                 </div>
                                                                 <div class="col-9 pr-0">
-                                                                    <h2>گوشی موبایل سامسونگ مدل Galaxy A51</h2>
+                                                                    <h2>{{product.name}}</h2>
                                                                     <div class="row">
                                                                         <div class="col-7 pl-0">
-                                                                            <span class="price">320.000 تومان</span>
+                                                                            <span class="price">{{product.price|intcomma}} تومان</span>
                                                                         </div>
                                                                         <div class="col-5 pr-0 text-end">
-                                                                            <span class="views">321 بازدید</span>
+                                                                            <span class="views">{{product.total_views}} بازدید</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -149,6 +157,7 @@
                                                         </div>
                                                     </a>
                                                 </div>
+                                                {% endfor %}
                                                 <!-- Side Product -->
                                             </div>
                                         </div>
@@ -162,20 +171,13 @@
                             <div id="order-filters">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-12 col-sm-10 my-1">
-                                            <span class="d-block d-sm-inline-block">مرتب سازی بر اساس:</span>
-                                            <span class="order-filter d-block d-sm-inline-block active">جدیدترین</span>
-                                            <span class="order-filter d-block d-sm-inline-block">پربازدیدترین</span>
-                                            <span class="order-filter d-block d-sm-inline-block">پرفروش‌ترین</span>
-                                            <span class="order-filter d-block d-sm-inline-block">ارزان‌ترین</span>
-                                        </div>
                                         <div class="col-12 col-sm-2 pt-1 text-end">
                                             <span>
-                                                <a href="products-list.html" class="products-view-type"><i class="fa fa-th-list"></i></a>
-                                                <a href="products.html" class="products-view-type active"><i class="fa fa-th"></i></a>
+                                                <a href={% url 'product:products-list' %} class="products-view-type"><i class="fa fa-th-list"></i></a>
+                                                <a href={% url 'product:products' %} class="products-view-type active"><i class="fa fa-th"></i></a>
                                             </span>
                                             &nbsp;|&nbsp;
-                                            <span>122 کالا</span>
+                                            <span>{{product_count}} کالا</span>
                                         </div>
                                     </div>
                                 </div>
@@ -185,30 +187,30 @@
                                 <div class="container">
                                     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-md-4">
                                         <!-- Products -->
+                                         {% for product in products %}
                                         <div class="col">
                                             <!-- Product Box -->
                                             <div class="product-box">
-                                                <a href="./product.html"><div class="image" style="background-image: url('assets/images/products/p100.png')"></div></a>
+                                                <a href={% url 'product:product-detail' pk=product.id %}>><div class="image" style="background-image: url({{product.img1.url}})"></div></a>
                                                 <div class="details p-3">
                                                     <div class="category">
-                                                        <a href="./products.html">گوشی موبایل</a>
+                                                        <a href="#">{{product.category.parent}}/{{product.category.name}} </a>
                                                         &nbsp;/&nbsp;
-                                                        <a href="./products.html">سامسونگ</a>
+                                                        
                                                     </div>
-                                                    <a href="./product.html"><h2>گوشی موبایل سامسونگ مدل Galaxy A51 دو سیم کارت</h2></a>
-                                                    <div class="price">6.000.000 تومان</div>
+                                                    <a href={% url 'product:product-detail' pk=product.id %}><h2>{{product.name}}</h2></a>
+                                                    <div class="price">{{product.price|intcomma}} تومان</div>
                                                     <div class="rate">
-                                                        <i class="fa fa-star-half-alt"></i>
+                                                        {% for star in product.get_average_score|times %}
                                                         <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <span class="reviews">(14 رای دهنده)</span>
+                                                        {% endfor %}
+                                                        <span class="reviews">({{product.total_vots}} رای دهنده)</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- /Product Box -->
                                         </div>
+                                        {% endfor %}
                                         <!-- /Products -->
                                     </div>
                                 </div>

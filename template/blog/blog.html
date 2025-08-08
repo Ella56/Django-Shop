@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% block 'title' %}{% endblock 'title' %}
+{% load jalali_filters %}
+{% block 'title' %}Blog{% endblock 'title' %}
 {% block 'content' %}
 
 <section class="inner-page" id="blog-page">
@@ -43,16 +44,16 @@
                                                  {% for blog in blogs %}
                                                 <div class="col">
                                                     <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
-                                                        <a href={% url 'blog:blog-detail' pk=blog.id %}><div class="post-image" style="background-image: url('{{blog.image.url}}')"></div></a>
+                                                        <a href={% url 'blog:blog-details' pk=blog.id %}><div class="post-image" style="background-image: url('{{blog.image.url}}')"></div></a>
                                                         <div class="details py-3 px-4">
-                                                            <div class="post-date">ارسال شده {{blog.created_at}}</div>
-                                                            <a href={% url 'blog:blog-detail' pk=blog.id %}>
+                                                            <div class="post-date">ارسال شده {{blog.created_at|to_jalali}}</div>
+                                                            <a href={% url 'blog:blog-details' pk=blog.id %}>
                                                                 <h2 class="post-title">{{blog.title}}</h2>
                                                             </a>
-                                                            <a href={% url 'blog:blog-detail' pk=blog.id %}>
+                                                            <a href={% url 'blog:blog-details' pk=blog.id %}>
                                                                 <div class="post-description">{{blog.content}}</div>
                                                             </a>
-                                                            <div class="read-more"><a href={% url 'blog:blog-detail' pk=blog.id %} class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
+                                                            <div class="read-more"><a href={% url 'blog:blog-details' pk=blog.id %} class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -78,11 +79,11 @@
                                                 <!-- Side Panel Product -->
                                                  {% for ptoduct in most_views_product %}
                                                 <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    <a href="./product.html">
+                                                    
                                                         <div class="side-blog-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url({{product.image.url}})"></div>
+                                                                    <div class="image" style="background-image: url({{product.img1.url}})"></div>
                                                                 </div>
                                                                 <div class="col-8 px-0">
                                                                     <h2>{{product.name}}</h2>
@@ -122,10 +123,16 @@
                                                                 <a href={% url 'blog:blog-details' pk=item.id %}><h2>{{item.title}}</h2></a>
                                                                 <div class="row">
                                                                     <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{item.tags.name}}</a></span>
+                                                                        <span class="category">دسته بندی: 
+                                                                            {% if item.tags.name %}
+                                                                                <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{ item.tags.name }}</a>
+                                                                            {% else %}
+                                                                                <a href={% url 'blog:blog' %}>مطالب</a>
+                                                                            {% endif %}
+                                                                        </span>
                                                                     </div>
                                                                     <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">{{item.created_at}}</span>
+                                                                        <span class="date">{{item.created_at|to_jalali}}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load jalali_filters %}
 {% block 'title' %}{% endblock 'title' %}
 {% block 'content' %}
 
@@ -10,7 +11,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 px-0">
-                            <h1>{{+blog.title}}</h1>
+                            <h1>{{blog.title}}</h1>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
@@ -38,12 +39,18 @@
                                             <div class="col-12 col-md-8">
                                                 <h1>{{blog.title}}</h1>
                                             </div>
-                                            <div class="col-12 col-md-4 text-start text-md-end"><span class="date">ارسال شده {{blog.created_at}}</span></div>
+                                            <div class="col-12 col-md-4 text-start text-md-end"><span class="date">ارسال شده {{blog.created_at|to_jalali}}</span></div>
                                         </div>
                                         <hr>
                                         <div class="row py-0 px-3" id="post-details">
                                             <div class="col-8">
-                                                <span>دسته بندی: <a href={% url 'blog:blog-category' tag=blog.tags.name %}> {{blog.tags.name}}</a></span>
+                                                <span>دسته بندی: 
+                                                    {% if item.tags.name %}
+                                                        <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{ item.tags.name }}</a>
+                                                    {% else %}
+                                                        <a href={% url 'blog:blog' %}>مطالب</a>
+                                                    {% endif %}
+                                                </span>
                                             </div>
                                             <div class="col-4 text-end"><span>{{blog.total_views}} بازدید |{{blog.comment_count}} نظر</span></div>
                                         </div>
@@ -80,7 +87,7 @@
                                                         <div class="row">
                                                             <div class="col-12 pt-2">
                                                                 <!-- Show Comments -->
-                                                                 {% fot comment in blog.get_comments %}
+                                                                 {% for comment in blog.get_comments %}
                                                                 <div class="comment p-3 my-2">
                                                                     <div class="sender-details">
                                                                         <div class="row">
@@ -88,8 +95,8 @@
                                                                                 <img src="{% static 'assets/images/user-no-image.jpg' %}" alt="" class="rounded">
                                                                             </div>
                                                                             <div class="col-9 col-sm-10 col-md-11 pr-0 pr-md-2 pr-xl-0 pt-0 pt-lg-1">
-                                                                                <div class="name">{{comment.name.fisrt_name}} {{comment.name.last_name}} </div>
-                                                                                <div class="date">ارسال شده {{comment.created_at}}</div>
+                                                                                <div class="name">{{comment.name.first_name}} {{comment.name.last_name}} </div>
+                                                                                <div class="date">ارسال شده {{comment.created_at|to_jalali}}</div>
                                                                             </div>
                                                                             <div class="col-12">
                                                                                 <p>{{comment.comment}}</p>
@@ -114,8 +121,8 @@
                                                                                             <img src="{% static 'assets/images/user-no-image.jpg' %}" alt="" class="rounded">
                                                                                         </div>
                                                                                         <div class="col-9 col-sm-10 col-md-11 pr-0 pr-md-2 pr-xl-0 pt-0 pt-lg-1">
-                                                                                            <div class="name">{{reply.name.fisrt_name}} {{reply.name.last_name}} </div>
-                                                                                            <div class="date">ارسال شده در {{reply.created_at}}</div>
+                                                                                            <div class="name">{{reply.name.first_name}} {{reply.name.last_name}} </div>
+                                                                                            <div class="date">ارسال شده در {{reply.created_at|to_jalali}}</div>
                                                                                         </div>
                                                                                         <div class="col-12">
                                                                                             <p>{{reply.reply}}</p>
@@ -229,10 +236,16 @@
                                                                 <a href={% url 'blog:blog-details' pk=post.id %}><h2>{{post.title}}</h2></a>
                                                                 <div class="row">
                                                                     <div class="col-12 col-xl-6 pl-0">
-                                                                        <span class="category">دسته بندی: <a href={% url 'blog:blog-category' tag=post.tags.name%}>{{post.tags.name}}</a></span>
+                                                                        <span class="category">دسته بندی: 
+                                                                           {% if item.tags.name %}
+                                                                                <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{ item.tags.name }}</a>
+                                                                            {% else %}
+                                                                                <a href={% url 'blog:blog' %}>مطالب</a>
+                                                                            {% endif %}
+                                                                        </span>
                                                                     </div>
                                                                     <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
-                                                                        <span class="date">{{post.created_at}}</span>
+                                                                        <span class="date">{{post.created_at|to_jalali}}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -142,8 +142,8 @@
                                             <li class="droopmenu-parent" aria-haspopup="true">
                                                 <a href={% url 'product:products' %} aria-expanded="false">صفحات فروشگاه<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
-                                                    <li><a href={% url 'product:products' %}>(کاشی کاری) <sup>محصولات</sup></a></li>
-                                                    <li><a href={% url 'product:products-list' %}>(لیست) <sup>محصولات</sup></a></li>
+                                                    <li><a href={% url 'product:products' %}>محصولات<sup>(کاشی کاری) </sup></a></li>
+                                                    <li><a href={% url 'product:products-list' %}> محصولات<sup>(لیست)</sup></a></li>
                                                 </ul>
                                             </li>
                                             <li class="droopmenu-parent" aria-haspopup="true">
@@ -164,7 +164,7 @@
                                                 <a href="#" aria-expanded="false">اطلاعات خرید<em class="droopmenu-topanim"></em></a><div class="dm-arrow"></div>
                                                 <ul style="">
                                                     <li><a href={% url 'accounts:user-compare' %}>مقایسه محصول</a></li>
-                                                    <li><a href="./cart.html">سبد خرید</a></li>
+                                                    <li><a href={% url 'cart:cart' %}>سبد خرید</a></li>
                                                     <li><a href="./checkout.html">پیش فاکتور</a></li>
                                                 </ul>
                                             </li>
@@ -177,11 +177,11 @@
                                                         <li><a href="profile/factors.html">سفارشات</a></li>
                                                         <li><a href="profile/factor-view.html">مشاهده فاکتور</a></li>
                                                         <li><a href={% url 'accounts:addresses' %}>آدرس ها</a></li>
-                                                        <li><a href="profile/favorites.html">علاقه مندی ها</a></li>
+                                                        <li><a href={% url 'accounts:user-favorites' %}>علاقه مندی ها</a></li>
                                                     {% else %}
-                                                        <li><a href="{% url 'accounts:signup' %}">عضویت در سایت</a></li>
-                                                        <li><a href="{% url 'accounts:login' %}">ورود به سایت</a></li>
-                                                        <li><a href="{% url 'accounts:reset-password' %}">بازنشانی رمز عبور</a></li>
+                                                        <li><a href={% url 'accounts:signup' %}>عضویت در سایت</a></li>
+                                                        <li><a href={% url 'accounts:login' %}>ورود به سایت</a></li>
+                                                        <li><a href={% url 'accounts:reset-password' %}>بازنشانی رمز عبور</a></li>
                                                         <li class="dm-bottom-separator"></li>
                                                     {% endif %}
                                                 </ul>
@@ -298,6 +298,146 @@
 <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
 <script src="{% static 'assets/js/pagination.js' %}"></script>
 <script src="{% static 'assets/js/scripts.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("price-filter-form");
+    
+        if (!form) {
+            return;
+        }
+    
+        var minPriceElement = document.getElementById("price-range-from");
+        var maxPriceElement = document.getElementById("price-range-to");
+        var minPriceInput = document.getElementById("min-price");
+        var maxPriceInput = document.getElementById("max-price");
+        var slider = document.getElementById("steps-slider");
+    
+        if (!minPriceElement || !maxPriceElement || !minPriceInput || !maxPriceInput || !slider) {
+            return;
+        }
+    
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // افزودن کاما برای نمایش
+        }
+    
+        function removeCommas(num) {
+            return num.toString().replace(/,/g, ""); // حذف کاما برای ارسال به سرور
+        }
+    
+        function updatePriceInputs(min, max) {
+            minPriceElement.innerText = formatNumber(min);
+            maxPriceElement.innerText = formatNumber(max);
+            minPriceInput.value = removeCommas(min);
+            maxPriceInput.value = removeCommas(max);
+        }
+    
+        if (!slider.noUiSlider) {
+            noUiSlider.create(slider, {
+                start: [parseInt(minPriceInput.value), parseInt(maxPriceInput.value)],
+                connect: true,
+                range: {
+                    min: 10000,
+                    max: 5000000
+                },
+                format: {
+                    to: function (value) {
+                        return formatNumber(value.toFixed(0)); // نمایش عدد با کاما
+                    },
+                    from: function (value) {
+                        return parseInt(removeCommas(value)); // حذف کاما هنگام مقداردهی اولیه
+                    }
+                }
+            });
+    
+            slider.noUiSlider.on("update", function (values) {
+                updatePriceInputs(values[0], values[1]);
+            });
+        }
+    
+        // هنگام ارسال فرم، مقدار ارسالی را بدون کاما بفرست
+        form.addEventListener("submit", function () {
+            minPriceInput.value = removeCommas(minPriceElement.innerText);
+            maxPriceInput.value = removeCommas(maxPriceElement.innerText);
+        });
+    });
+    
+  </script>
+  <script>
+    document.getElementById('province').addEventListener('change', function() {
+      const provinceId = this.value;
+      const citySelect = document.getElementById('city');
+      
+      citySelect.innerHTML = '<option value="">در حال بارگذاری...</option>';
+      
+      if (provinceId) {
+        fetch(`get-cities/?province_id=${provinceId}`)
+          .then(response => response.json())
+          .then(data => {
+            citySelect.innerHTML = '<option value="">شهر را انتخاب کنید</option>';
+            data.forEach(city => {
+              const option = document.createElement('option');
+              option.value = city.id;
+              option.textContent = city.name;
+              citySelect.appendChild(option);
+            });
+          })
+          .catch(error => {
+            citySelect.innerHTML = '<option value="">خطا در بارگذاری شهرها</option>';
+          });
+      } else {
+        citySelect.innerHTML = '<option value="">ابتدا استان را انتخاب کنید</option>';
+      }
+    });
+    </script>
+    <script>
+        document.querySelectorAll(".remove-from-compare").forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+                let productId = this.getAttribute("data-id");
+    
+                fetch("/accounts/remove-compare/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // حذف محصول از DOM
+                        this.closest(".products-compare-item").remove();
+
+                        document.querySelectorAll(`.compare-specs[data-id="${productId}"]`).forEach(element => {
+                            element.remove();
+                        });
+                        
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("خطا در حذف محصول:", error);
+                    alert("خطا در برقراری ارتباط با سرور!");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let form = document.getElementById("myForm");
+        
+            form.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // جلوگیری از عملکرد پیش‌فرض (برای جلوگیری از مشکلات در برخی فرم‌ها)
+                    form.submit(); // ارسال فرم
+                }
+            });
+        });
+        </script>
 <!-- /Scripts -->
 </body>
 </html>

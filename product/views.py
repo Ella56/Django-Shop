@@ -24,7 +24,7 @@ class ProductView(ListView):
 
 class ProductListView(ListView):
     model = Product
-    template_name = "product/product-list.html"
+    template_name = "product/products-list.html"
     context_object_name = "products"
 
 
@@ -90,7 +90,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = self.object.category.name
-        context['related_products'] = self.model.objects.filter(category_name = category).order_by("created_at")[:30]
+        context['related_products'] = self.model.objects.filter(category__name = category).order_by("created_at")[:30]
         return context
     
 

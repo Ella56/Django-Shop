@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jalali_date',
+    'django.contrib.humanize',
     'accounts',
     'root',
     'blog',
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'cart',
     'payment',
     'mail_templated',
-    'django_faker',
+
    
 ]
 

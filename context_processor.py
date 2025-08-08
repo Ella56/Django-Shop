@@ -7,9 +7,11 @@ def general_context(request):
         user = request.user
         profile = Profile.objects.get(user=user)
         parents = Category.objects.filter(parent=None)
+        cart_count = len(request.session.get('cart', {}))
         context = {
             'profile' : profile,
             'parents' : parents,
+            'cart_count': cart_count,
         }
     else:
 
