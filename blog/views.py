@@ -36,6 +36,7 @@ class BlogDetailView(DetailView):
     template_name = 'blog/blog-post.html'
     context_object_name = 'blog'
     queryset = Blog.objects.filter(status=True)
+    
 
     def get(self, request, *args, **kwargs):
         blog = self.get_object()

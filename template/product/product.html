@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% load static %}
 {% load humanize %}
 {% load jalali_filters %}
@@ -32,7 +32,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="content">
-                    <div class="row">ت
+                    <div class="row">
                         <div class="col-12 col-lg-5 px-lg-0">
                             <div class="swiper-container gallery-top">
                                 <!-- Additional required wrapper -->
@@ -232,7 +232,7 @@
                                                                                         <div class="col-12">
                                                                                             <p>{{comment.comment}}</p>
                                                                                             <span class="reply"><img src="{% static 'assets/images/comment-reply.png' %}" alt=""> ارسال پاسخ</span>
-                                                                                            <form method="post" action="{% url 'product:add-reply' pk=comment.id %}">
+                                                                                            <form method="post" action="{% url 'product:product-reply' pk=comment.id %}">
                                                                                                 {% csrf_token %}
                                                                                                 <textarea name="text" class="form-control" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>
                                                                                                 <button type="submit" class="btn btn-sm btn-primary mt-2">ارسال پاسخ</button>

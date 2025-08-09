@@ -100,7 +100,7 @@ class Province(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=100)
-    Province = models.ForeignKey(Province,on_delete=models.CASCADE, null=True, blank= True)
+    province = models.ForeignKey(Province,on_delete=models.CASCADE, null=True, blank= True)
 
     def __str__(self):
         return self.name
@@ -122,7 +122,11 @@ class Address(models.Model):
 
     def __str__(self):
         return (
-            str(self.profile.user.email) + ' - ' + str(self.city.name) + ' - ' + str(self.province.name)
+            str(self.user_profile.user.email) 
+            + ' - ' 
+            + str(self.city.name) 
+            + ' - ' 
+            + str(self.province.name)
         )
 
     class Meta:

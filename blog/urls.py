@@ -10,8 +10,8 @@ urlpatterns = [
     path('', BlogView.as_view(), name='blog'),
     path('category/<str:tag>', BlogView.as_view(), name= "blog-category"),
     path('blog-details/<int:pk>', BlogDetailView.as_view(), name="blog-details"),
-    path('blogs/add_comments/<int:pk>',CreateCommentView.as_view(),name='add_comment',),
-    path('blogs/add_reply/<int:pk>',CreateReplyView.as_view(),name='add_reply',),
+    path('blogs/add_comments/<int:pk>',CreateCommentView.as_view(),name='add-comment',),
+    path('blogs/add_reply/<int:pk>',CreateReplyView.as_view(),name='add-reply',),
 
     
 ]

@@ -101,7 +101,7 @@
                                                                             <div class="col-12">
                                                                                 <p>{{comment.comment}}</p>
                                                                                 <span class="reply"><img src="{% static 'assets/images/comment-reply.png' %}" alt=""> ارسال پاسخ</span>
-                                                                                <form method="post" action="{% url 'blog:add_reply' pk=comment.id %}">
+                                                                                <form method="post" action="{% url 'blog:add-reply' pk=comment.id %}">
                                                                                         {% csrf_token %}
                                                                                         <textarea name="reply" class="form-control" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>
                                                                                         <button type="submit" class="btn btn-sm btn-primary mt-2">ارسال پاسخ</button>
@@ -149,7 +149,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-12 py-3">
-                                                            <form method="post" action="{% url 'blog:add_comment' pk=blog.id %}">
+                                                            <form method="post" action="{% url 'blog:add-comment' pk=blog.id %}">
                                                                 {% csrf_token %}
                                                                 <div id="send-comment-form">
                                                                     <p>نظر خود را برای این مطلب ارسال کنید. نشانی ایمیل شما منتشر نخواهد شد.</p>
@@ -196,7 +196,7 @@
                                                         <div class="side-blog-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-4 pl-2">
-                                                                    <div class="image" style="background-image: url({{product.img.url}})"></div>
+                                                                    <div class="image" style="background-image: url({{product.img1.url}})"></div>
                                                                 </div>
                                                                 <div class="col-8 px-0">
                                                                     <h2>{{product.name}}</h2>
@@ -237,11 +237,7 @@
                                                                 <div class="row">
                                                                     <div class="col-12 col-xl-6 pl-0">
                                                                         <span class="category">دسته بندی: 
-                                                                           {% if item.tags.name %}
-                                                                                <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{ item.tags.name }}</a>
-                                                                            {% else %}
-                                                                                <a href={% url 'blog:blog' %}>مطالب</a>
-                                                                            {% endif %}
+                                                                                <a href={% url 'blog:blog-category' tag=post.tag.name %}>{{post.tag.name}}</a>
                                                                         </span>
                                                                     </div>
                                                                     <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">

@@ -77,9 +77,9 @@
                                         <div class="container">
                                             <div class="row">
                                                 <!-- Side Panel Product -->
-                                                 {% for ptoduct in most_views_product %}
+                                                {% for product in most_views_product %}
                                                 <div class="col-12 col-lg-12 px-0 mt-2">
-                                                    
+                                                    <a href={% url 'product:product-detail' pk=product.id %}>
                                                         <div class="side-blog-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-4 pl-2">
@@ -89,7 +89,7 @@
                                                                     <h2>{{product.name}}</h2>
                                                                     <div class="row">
                                                                         <div class="col-8 pl-0">
-                                                                            <span class="price">{{product.get_discounted_price}}تومان</span>
+                                                                            <span class="price">{{product.get_discounted_price}} تومان</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -124,11 +124,7 @@
                                                                 <div class="row">
                                                                     <div class="col-12 col-xl-6 pl-0">
                                                                         <span class="category">دسته بندی: 
-                                                                            {% if item.tags.name %}
-                                                                                <a href={% url 'blog:blog-category' tag=item.tags.name %}>{{ item.tags.name }}</a>
-                                                                            {% else %}
-                                                                                <a href={% url 'blog:blog' %}>مطالب</a>
-                                                                            {% endif %}
+                                                                                <a href={% url 'blog:blog-category' tag=item.tag.name %}>{{ item.tag.name }}</a>
                                                                         </span>
                                                                     </div>
                                                                     <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
