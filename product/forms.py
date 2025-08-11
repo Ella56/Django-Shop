@@ -8,7 +8,7 @@ from .models import Comment, Reply
 class CommentFrom(forms.ModelForm):
    
     class Meta: 
-        models = Comment
+        model = Comment
         fields = ['comment']
 
 

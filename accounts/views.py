@@ -68,7 +68,6 @@ class SignupView(CreateView):
         email = data['email']
         password = data['password1']
         user = authenticate(username=email, password=password)
-        print(user.profile.id)
         if user is not None:
             login(self.request, user)
         messages.add_message(
@@ -393,7 +392,7 @@ def favorites_remove(request, pk):
         favorites = Favorites.objects.get(name=profile,product=product)
         favorites.delete()
         messages.success(request, 'محصول حذف شد')
-        return redirect('accounts:user-favorties')
+        return redirect('accounts:user-favorites')
     except Exception as e:
         messages.error(request, 'خطایی رخ داد . یکبار صفحه را رفرش کنید!')
-        return redirect('accounts:user-favorties')
+        return redirect('accounts:user-favorites')

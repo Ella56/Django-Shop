@@ -178,6 +178,7 @@
                                                         <li><a href={% url 'payment:factor-view' %}>مشاهده فاکتور</a></li>
                                                         <li><a href={% url 'accounts:addresses' %}>آدرس ها</a></li>
                                                         <li><a href={% url 'accounts:user-favorites' %}>علاقه مندی ها</a></li>
+                                                        <li><a href="{% url 'accounts:logout' %}">خروج از حساب کاربری</a></li>
                                                     {% else %}
                                                         <li><a href={% url 'accounts:signup' %}>عضویت در سایت</a></li>
                                                         <li><a href={% url 'accounts:login' %}>ورود به سایت</a></li>

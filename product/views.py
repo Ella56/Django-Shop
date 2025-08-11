@@ -68,7 +68,7 @@ class ProductListView(ListView):
 
         guaranty = self.request.GET.get('guaranty')
         if guaranty == "true":
-            return Product.objects.filter(has__guaranty=True)
+            return Product.objects.filter(has_guaranty=True)
         
 
         return Product.objects.all()
@@ -137,15 +137,14 @@ class ProductCommentView(CreateView):
 class ProductReplyView(CreateView):
     form_class = RepliesForm
 
-
     def get(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, pk=kwargs['pk'])
         product = comment.product
-        return redirect(f'products/product-detail/{product.pk}')
-    
+        return redirect(f'products/detail/{product.pk}')
+
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(self.request,"لطفاً وارد شوید")
+            messages.error(self.request, 'ابتدا وارد شوید')
             return redirect('accounts:login')
         comment = get_object_or_404(Comment, pk=kwargs['pk'])
         user = request.user
@@ -154,15 +153,17 @@ class ProductReplyView(CreateView):
         form = self.get_form()
         if form.is_valid():
             reply = form.save(commit=False)
-            reply.comment = Comment
+            reply.comment = comment
             reply.name = profile
             reply.email = email
             reply.save()
-            messages.success(request, 'پاسخ شما دریافت شد . در صورت تایید مدیر سایت نمایش داده می شود')
+            messages.success(
+                request,
+                'پاسخ شما دریافت شد . در صورت تایید مدیر سایت نمایش داده می شود',
+            )
             return redirect('product:product-detail', pk=comment.product.pk)
         else:
             return self.form_invalid(form)
-        
 
     def form_invalid(self, form):
         messages.error(self.request, 'خطا در ارسال پاسخ')

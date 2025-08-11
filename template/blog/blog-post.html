@@ -101,7 +101,7 @@
                                                                             <div class="col-12">
                                                                                 <p>{{comment.comment}}</p>
                                                                                 <span class="reply"><img src="{% static 'assets/images/comment-reply.png' %}" alt=""> ارسال پاسخ</span>
-                                                                                <form method="post" action="{% url 'blog:add-reply' pk=comment.id %}">
+                                                                                <form method="post" action="{% url 'blog:add-reply' pk=comment.pk %}">
                                                                                         {% csrf_token %}
                                                                                         <textarea name="reply" class="form-control" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>
                                                                                         <button type="submit" class="btn btn-sm btn-primary mt-2">ارسال پاسخ</button>

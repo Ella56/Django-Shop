@@ -150,7 +150,7 @@
                                             <select name="g_month" class="form-select">
                                                 <option value="0">بدون گارانتی</option>
                                                     {% for g in product.guaranty.all %}
-                                                        <option value="{{g.mounts}}">گارانتی {{g.months}} ماهه</option>
+                                                        <option value="{{g.months}}">گارانتی {{g.months}} ماهه</option>
                                                     {% endfor %}
                                             </select>
                                         </div>
@@ -234,7 +234,7 @@
                                                                                             <span class="reply"><img src="{% static 'assets/images/comment-reply.png' %}" alt=""> ارسال پاسخ</span>
                                                                                             <form method="post" action="{% url 'product:product-reply' pk=comment.id %}">
                                                                                                 {% csrf_token %}
-                                                                                                <textarea name="text" class="form-control" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>
+                                                                                                <textarea name="reply" class="form-control" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>
                                                                                                 <button type="submit" class="btn btn-sm btn-primary mt-2">ارسال پاسخ</button>
                                                                                             </form>
                                                                                         </div>
@@ -321,7 +321,7 @@
                             <div class="title py-3 text-center">محصولات مرتبط</div>
                             <div class="owl-carousel products-carousel">
                                 <!-- Product Item -->
-                                 {% for product in same_product %}
+                                 {% for product in related_products %}
                                 <div class="product-box item">
                                     <a href={% url 'product:product-detail' pk=product.id %}><div class="image" style="background-image: url('{{product.img1.url}}')"></div></a>
                                     <div class="details p-3">

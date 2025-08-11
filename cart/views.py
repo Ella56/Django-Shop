@@ -25,18 +25,17 @@ class CartView(LoginRequiredMixin, TemplateView):
             request.session.modified = True
         return super().get(request, *args, **kwargs)
     
-
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         cart = self.request.session.get('cart', {})
         product_list = []
         for key, value in cart.items():
-            product = get_object_or_404(Product, id = value['pid'])
+            product = get_object_or_404(Product, id=value['pid'])
             product_list.append(product)
         category_list = [product.category.name for product in product_list]
         products = Product.objects.filter(category__name__in=category_list)
         context['products'] = products
-        return products
+        return context
     
 
 class AddtoCartView(TemplateView):
@@ -50,7 +49,7 @@ class AddtoCartView(TemplateView):
             return redirect("product:products")
         
         product = get_object_or_404(Product, id=pid)
-        guaranty = (get_object_or_404(Guaranty, monthes = g_month)
+        guaranty = (get_object_or_404(Guaranty, months = g_month)
                     if g_month != '0' else 0)
         increase_price_with_guarany = ((product.price * guaranty.price_increase / 100)
                                        if guaranty != 0 else 0)
@@ -73,24 +72,24 @@ class AddtoCartView(TemplateView):
                     )
                     found = True
                     break
-            if not found:
-                unique_id = str(uuid.uuid4())[:8]
-                cart[unique_id] = {
-                    'pid': product.id,
-                    'title': product.name,
-                    'image' : product.img1.url if product.img1 else None,
-                    'price' : product.price,
-                    'final_price': product_price,
-                    'quantity' : 1,
-                    'guaranty' : g_month,
-                    'color' : color,
-                    'product_discount' : int(product.discount_price),
-                    'product_discount_price' : int(price_with_discount)
-                }
-            request.session['cart'] = cart
-            request.session.modified = True
-            messages.success(request, 'محصول به سبد خرید شما اضافه شد')
-            return redirect("product:product-detail", pk=pid)
+        if not found:
+            unique_id = str(uuid.uuid4())[:8]
+            cart[unique_id] = {
+                'pid': product.id,
+                'title': product.name,
+                'image' : product.img1.url if product.img1 else None,
+                'price' : product.price,
+                'final_price': product_price,
+                'quantity' : 1,
+                'guaranty' : g_month,
+                'color' : color,
+                'product_discount' : int(product.discount_price),
+                'product_discount_price' : int(price_with_discount)
+            }
+        request.session['cart'] = cart
+        request.session.modified = True
+        messages.success(request, 'محصول به سبد خرید شما اضافه شد')
+        return redirect("product:product-detail", pk=pid)
         
 
 
