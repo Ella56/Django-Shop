@@ -15,9 +15,9 @@
                             <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="../index.html">صفحه نخست</a></li>
-                                    <li class="breadcrumb-item"><a href="#">ناحیه کاربری</a></li>
-                                    <li class="breadcrumb-item" aria-current="page">سفارشات</li>
+                                    <li class="breadcrumb-item"><a href={% url 'root:home' %}>صفحه نخست</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'accounts:view-profile' %}>ناحیه کاربری</a></li>
+                                    <li class="breadcrumb-item"><a href={% url 'payment:factors' %}> سفارشات</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">نمایش فاکتور</li>
                                 </ol>
                             </nav>
@@ -44,8 +44,8 @@
                                                     <img src="../assets/images/user-no-image.jpg" class="rounded-circle">
                                                 </span>
                                                 <span class="col-7 col-sm-8 col-lg-7 pt-0 pt-sm-2 pt-md-3 pt-lg-0 align-self-center">
-                                                    <div id="full-name">مصطفی کلانتری</div>
-                                                    <div class="mt-2" id="email-mobile">09351234567</div>
+                                                    <div id="full-name">{{profile.first_name}} {{profile.last_name}}<</div>
+                                                    <div class="mt-2" id="email-mobile">{{ profile.mobile }}</div>
                                                 </span>
                                             </span>
                                         </button>
@@ -54,28 +54,28 @@
                                         <div class="accordion-body">
                                             <ul>
                                                 <li>
-                                                    <a href="personal-info.html" class="active">
+                                                    <a href={% url 'accounts:view-profile'%} class="active">
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="../assets/images/icons/profile-menu/profile.webp" class="pl-2"></div> اطلاعات حساب
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="factors.html">
+                                                    <a href={% url 'payment:factors' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="../assets/images/icons/profile-menu/orders.webp" class="pl-2"></div> سفارش های من
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="favorites.html">
+                                                    <a href={% url 'accounts:user-favorites' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="../assets/images/icons/profile-menu/favorites.webp" class="pl-2"></div> علاقه مندی ها
                                                         </div>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="addresses.html">
+                                                    <a href={% url 'accounts:addresses' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="../assets/images/icons/profile-menu/addresses.webp" class="pl-2"></div> آدرس های من
                                                         </div>
@@ -83,7 +83,7 @@
                                                 </li>
                                                 <li><hr></li>
                                                 <li>
-                                                    <a href="../index.html">
+                                                    <a href={% url 'accounts:logout' %}>
                                                         <div>
                                                             <div class="icon d-inline-block"><img src="../assets/images/icons/profile-menu/exit.webp" class="pl-2"></div> خروج از حساب
                                                         </div>
@@ -96,13 +96,14 @@
                             </div>
                             <!-- /Side Panel -->
                         </div>
+                        {% if cart %}
                         <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
 
                             <!-- Factors List -->
                             <div class="custom-container mt-2 mt-lg-0 order">
                                 <div class="row pt-2 px-3">
-                                    <div class="col-12 col-sm-6"><h2>سفارش شماره #1234</h2></div>
-                                    <div class="col-12 col-sm-6 text-sm-end"><span>20 مرداد 1400</span> - <span>پرداخت شده</span></div>
+                                    <div class="col-12 col-sm-6"><h2>سفارش شماره #{{cart.id}}</h2></div>
+                                    <div class="col-12 col-sm-6 text-sm-end"><span>{{cart.created_at|to_jalali}}</span> - <span>پرداخت شده</span></div>
                                 </div>
                                 <hr>
                                 <div class="container">
@@ -118,8 +119,8 @@
                                                     <strong>فاکتور فروش</strong>
                                                 </div>
                                                 <div class="col-12 col-md-4 py-2 py-md-0 text-center text-md-end">
-                                                    <div>تاریخ خرید: 8 مرداد 1402</div>
-                                                    <div>شماره سفارش: 1234</div>
+                                                    <div>تاریخ خرید:{{cart.created_at|to_jalali}}</div>
+                                                    <div>شماره سفارش: {{cart.id}}</div>
                                                 </div>
                                             </div>
                                             <div class="row border border-1">
@@ -131,8 +132,8 @@
                                                 </div>
                                                 <div class="col-12 col-md-6 py-3 border border-1">
                                                     <strong>خریدار</strong>
-                                                    <div>آدرس: تهران، پاسداران</div>
-                                                    <div>تلفن تماس: 09121234567</div>
+                                                    <div>آدرس:{{address.city}}، {{address.complete_address}}</div>
+                                                    <div>تلفن تماس: {{profile.mobile}}</div>
                                                 </div>
                                             </div>
                                             <div class="row py-3 border border-1">
@@ -150,47 +151,25 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
+                                                            {% for item in cart.get_items %}
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td nowrap="nowrap">{{item.product.name}}</td>
+                                                                    <td>{{item.product.price}}</td>
+                                                                    <td>{{item.product.discount_price}}</td>
+                                                                    <td>{{item.quantity}}</td>
+                                                                    <td>{{item.quantity|final_price:item.product.price}}</td>
+                                                            </tr>
+                                                            {% endfor %}
                                                             <tr>
-                                                                <td>1</td>
-                                                                <td nowrap="nowrap">گوشی موبایل سامسونگ مدل Galaxy A21s</td>
-                                                                <td>12,000,000</td>
-                                                                <td>1,000,000</td>
-                                                                <td>1</td>
-                                                                <td>11,000,000</td>
+                                                            <tr>
+                                                                <td colspan="6" style="text-align: left">جمع فاکتور: {{cart.total_price}} تومان</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>2</td>
-                                                                <td nowrap="nowrap">گوشی موبایل سامسونگ مدل Galaxy A21s</td>
-                                                                <td>12,000,000</td>
-                                                                <td>1,000,000</td>
-                                                                <td>1</td>
-                                                                <td>11,000,000</td>
+                                                                <td colspan="6" style="text-align: left">هزینه ارسال:  با مشتری</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>3</td>
-                                                                <td nowrap="nowrap">گوشی موبایل سامسونگ مدل Galaxy A21s</td>
-                                                                <td>12,000,000</td>
-                                                                <td>1,000,000</td>
-                                                                <td>1</td>
-                                                                <td>11,000,000</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>4</td>
-                                                                <td nowrap="nowrap">گوشی موبایل سامسونگ مدل Galaxy A21s</td>
-                                                                <td>12,000,000</td>
-                                                                <td>1,000,000</td>
-                                                                <td>1</td>
-                                                                <td>11,000,000</td>
-                                                            </tr>
-                                                            <tr>
-                                                            <tr>
-                                                                <td colspan="6" style="text-align: left">جمع فاکتور: 88,000,000 تومان</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="6" style="text-align: left">هزینه ارسال: 60,000 تومان</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="6" style="text-align: left">جمع کل: 88,060,000 تومان</td>
+                                                                <td colspan="6" style="text-align: left">جمع کل: {{cart.total_payment}}  تومان</td>
                                                             </tr>
                                                             </tr>
                                                             </tbody>
@@ -204,6 +183,32 @@
                             </div>
                             <!-- /Factors List -->
                         </div>
+                        {% else %}
+                        <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                            <!-- Factors List -->
+                            <div class="custom-container mt-2 mt-lg-0 order">
+                                <hr>
+                                <div class="container">
+                                    <div class="row py-2">
+                                        <div class="col-12">
+
+                                            <div class="row py-3 border border-1">
+                                                <div class="col-12 col-md-4 py-2 py-md-0 text-center text-md-start">
+                                                    <img src="{% static 'assets/images/logo.png' %}" height="50px">
+                                                    روبیک مارکت
+                                                </div>
+                                                <div class="col-12 col-md-4 py-2 py-md-0 text-center">
+                                                    <strong> شما اخیرا چنین خریدی نداشته اید و یا پرداخت آن لغو شده</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Factors List -->
+                        </div>
+                        <h2> شما اخیرا فاکتور خریدی نداشته اید  </h2>
+                        {% endif %}
                     </div>
                 </div>
             </div>
