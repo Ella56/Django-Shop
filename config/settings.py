@@ -49,6 +49,11 @@ INSTALLED_APPS = [
     'cart',
     'payment',
     'mail_templated',
+    'django_social_share',
+    'rest_framework',
+    'drf_yasg',
+    'django_filters',
+    'rest_framework.authtoken',
 
    
 ]
@@ -154,3 +159,12 @@ EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 
 AUTH_USER_MODEL = "accounts.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ]
+}

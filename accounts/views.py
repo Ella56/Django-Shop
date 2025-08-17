@@ -176,7 +176,7 @@ class SetAddressView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         user = self.request.user
         profile_id = get_object_or_404(Profile, user=user).id
-        if request.POST.get('profile')  != str(profile_id):
+        if request.POST.get('profile') != str(profile_id):
             messages.error(self.request, "شما مجاز به ویرایش این پروفایل نیستید")
         return super().post(request, *args ,**kwargs)
 

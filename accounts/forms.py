@@ -27,7 +27,7 @@ class EditProfileForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model= Address
-        fields = ['user_profile', 'province', 'city', 'postal_code', 'recipient', 'complete_address']
+        fields = ['profile', 'province', 'city', 'postal_code', 'recipient', 'complete_address']
 
 
 

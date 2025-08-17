@@ -7,6 +7,7 @@ django-filter==25.1
 django-jalali==7.4.0
 django-jalali-date==2.0.0
 django-mail-templated==2.6.5
+django-social-share==2.3.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 drf-yasg==1.21.10

@@ -27,5 +27,6 @@ urlpatterns = [
     path("reset-password-confirm/",ResetPasswordConfirm.as_view(), name='reset-password-confirm'),
     path("reset-password-complete/",ResetPasswordComplete.as_view(), name='reset-password-complete'),
     path("change-password/",ChangePassword.as_view(), name='change-password'),
+    path("api/v1/", include("accounts.api.v1.urls"))
 
 ]

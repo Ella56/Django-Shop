@@ -159,8 +159,12 @@ class SpecialOffer(models.Model):
         if remaining.total_seconds() < 0 :
             return {"days":0, "hours":0, "minutes":0, "seconds":0}
         
-        days = remaining.days
-        hours, remainder = divmod(remaining.seconds, 3600)
+        # days = remaining.days
+        # hours, remainder = divmod(remaining.seconds, 3600)
+        # minutes, seconds = divmod(remainder, 60)
+        total_seconds = int(remaining.total_seconds())
+        days, remainder = divmod(total_seconds, 86400)  # 86400 seconds in a day
+        hours, remainder = divmod(remainder, 3600)
         minutes, seconds = divmod(remainder, 60)
         return {"days": days, "hours":hours, "minutes":minutes, "seconds":seconds,}
     

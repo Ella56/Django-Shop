@@ -110,7 +110,7 @@ class City(models.Model):
 
 
 class Address(models.Model):
-    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE,null=True, blank=True, related_name='addresses')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE,null=True, blank=True, related_name='addresses')    
     province = models.ForeignKey(Province,on_delete=models.CASCADE,null=True, blank=True)
     city = models.ForeignKey(City,on_delete=models.CASCADE,null=True, blank=True)
     postal_code_validator = RegexValidator(regex = r'^[1-9]\d{9}$', message='کد پستی باید 10 کارکتر عددی باشد',)
@@ -122,7 +122,7 @@ class Address(models.Model):
 
     def __str__(self):
         return (
-            str(self.user_profile.user.email) 
+            str(self.profile.user.email) 
             + ' - ' 
             + str(self.city.name) 
             + ' - ' 

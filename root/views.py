@@ -22,6 +22,12 @@ class HomeView(TemplateView):
         ).order_by("-product__discount_price")
         context['blogs'] = Blog.objects.filter(status=True).order_by('-created_at')[:3]
         context['special_offers'] = special_offers
+        context["best_selling_products"] = Product.objects.all().order_by("-total_sold")[:12]
+        special_offers_list = list(special_offers)
+        for offer in special_offers_list:
+           offer.remaining = offer.remaining_time()
+
+        context["special_offers"] = special_offers_list
         return context
 
 
