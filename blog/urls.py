@@ -13,6 +13,7 @@ urlpatterns = [
     path('blog-details/add_reply/<int:pk>',CreateReplyView.as_view(),name='add-reply',),
     path('blog-details/add_comments/<int:pk>',CreateCommentView.as_view(),name='add-comment',),
     # path('blogs/add-reply/<int:pk>',CreateReplyView.as_view(),name='add-reply',),
+    path('api/v1/',include("blog.api.v1.urls"))
 
     
 ]

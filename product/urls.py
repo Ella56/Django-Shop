@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
 
 
@@ -20,6 +20,6 @@ urlpatterns = [
     path('add-comment/<int:pk>/',ProductCommentView.as_view(),name='product-comment',),
     path('add-replay/<int:pk>/', ProductReplyView.as_view(), name='product-reply'),
     path('list/search/', ProductListView.as_view(), name='product-by-search'),
-
+    path('api/v1/', include("product.api.v1.urls"))
     
 ]
