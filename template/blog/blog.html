@@ -39,9 +39,9 @@
                                             <div class="col"><h1 class="title">مرکز آموزش روبیک مارکت</h1></div>
                                         </div>
                                         <div class="container px-2 pb-3">
-                                            <div class="row row-cols-1 row-cols-md-2">
+                                            <div class="row row-cols-1 row-cols-md-2" id="blog-container">
                                                 <!-- /Blog Post -->
-                                                 {% for blog in blogs %}
+                                                 <!-- {% for blog in blogs %}
                                                 <div class="col">
                                                     <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
                                                         <a href={% url 'blog:blog-details' pk=blog.id %}><div class="post-image" style="background-image: url('{{blog.image.url}}')"></div></a>
@@ -57,7 +57,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {% endfor %}
+                                                {% endfor %} -->
                                                 <!-- Blog Post -->
                                             </div>
                                         </div>
@@ -152,3 +152,65 @@
 </section>
 
 {% endblock 'content'%}
+
+{% block 'scripts' %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const blogContainer = document.getElementById("blog-container");
+    const apiUrl = "http://127.0.0.1:8000/blog/api/v1/blog";
+
+    // If your DRF image URLs are relative, prepend your site domain
+    function getFullImageUrl(imagePath) {
+        if (!imagePath) return "/media/default.jpg"; // fallback image
+        if (imagePath.startsWith("http") || imagePath.startsWith("/")) return imagePath;
+        return "/" + imagePath; // prepend slash if needed
+    }
+
+    async function fetchBlogs() {
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error("Failed to fetch blogs");
+            const data = await response.json();
+
+            // Use data.results because your API is paginated
+            renderBlogs(data.results);
+        } catch (error) {
+            console.error(error);
+            blogContainer.innerHTML = "<p>مشکلی در دریافت پست ها پیش آمد.</p>";
+        }
+    }
+
+    function renderBlogs(blogs) {
+        blogContainer.innerHTML = ""; // clear existing content
+
+        blogs.forEach(blog => {
+            const blogHTML = `
+            <div class="col">
+                <div class="blog-post-box" data-aos="fade-up" data-aos-duration="1000">
+                    <a href="/blog/${blog.id}/">
+                        <div class="post-image" style="background-image: url('${getFullImageUrl(blog.image)}')"></div>
+                    </a>
+                    <div class="details py-3 px-4">
+                        <div class="post-date">ارسال شده ${new Date(blog.created_at).toLocaleDateString('fa-IR')}</div>
+                        <a href="/blog/blog-details/${blog.id}"><h2 class="post-title">${blog.title}</h2></a>
+                        <a href="/blog/blog-details/${blog.id}">
+                            <div class="post-description">${blog.content.substring(0, 100)}...</div>
+                        </a>
+                        <div class="read-more">
+                            <a href="/blog/blog-details/${blog.id}" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            blogContainer.insertAdjacentHTML("beforeend", blogHTML);
+        });
+    }
+
+    // Fetch and render blogs
+    fetchBlogs();
+});
+</script>
+     
+                  
+{% endblock 'scripts' %}

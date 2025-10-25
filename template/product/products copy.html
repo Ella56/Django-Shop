@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load jalali_filters %}
-{% block 'title' %}Product-List{% endblock 'title' %}
+{% block 'title' %}Products{% endblock 'title' %}
 {% block 'content' %}
 
 <section class="inner-page" id="products-page">
@@ -43,16 +43,16 @@
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <form action="{% url 'product:products-list-by-category' %}">
-                                                {% for parent in parents %}
-                                                    <div class="form-group">
-                                                        <input type="checkbox" id="category{{parent.id}}" name="category" value="{{parent.id}}">
-                                                        <label for="category1">{{parent.name}}</label>
-                                                    </div>
-                                                {% endfor %}
+                                            <form action={% url 'product:products-list-by-category' %}>
+                                           {% for parent in parents %}
                                                 <div class="form-group">
+                                                <input type="checkbox" id="category{{parent.id}}">
+                                                <label for="category1">{{parent.name}}</label>
+                                            </div>
+                                            {% endfor %}
+                                           <div class="form-group">
                                                 <input type="submit" value="اعمال فیلتر" class="col-12 text-center py-2">
-                                                </div>
+                                            </div>
                                             </form>
                                         </div>
                                     </div>
@@ -72,12 +72,12 @@
                                                 <div class="col-12 py-1 px-4 mt-3">
                                                     <div id="steps-slider" dir="rtl"></div>
                                                 </div>
-
                                                 <form id="price-filter-form" action="{% url 'product:products-list-by-price-range' %}" method="GET">
                                                     <div class="col-12 py-1 px-4 mt-3">
                                                         <div id="steps-slider" dir="rtl"></div>
                                                     </div>
-                                                <div class="col-12 d-flex justify-content-between align-items-center mt-3">
+<!-- سطر برای دو مقدار قیمت -->
+                                                    <div class="col-12 d-flex justify-content-between align-items-center mt-3">
                                                         <!-- حداقل قیمت -->
                                                         <div class="price-range d-flex align-items-center">
                                                             <div>از</div>
@@ -94,7 +94,7 @@
                                                             <div>تومان</div>
                                                         </div>
                                                     </div>
-                                                
+                                               
                                                 <div class="col-12 text-center py-2">
                                                     <button type="submit" class="btn btn-warning">اعمال محدوده تخفیف</button>
                                                 </div>
@@ -107,14 +107,14 @@
 
                             <div class="accordion filters-container mt-3">
                                 <div class="accordion-item">
-                                    <div id="collapseThree" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div id="collapseFour" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body pb-2">
                                             <div class="form-group">
                                                 <form action="{% url 'product:products-list-by-guaranty' %}">
                                                     <input type="checkbox" id="only-warranty" name="guaranty" value="true">
                                                     <label for="only-warranty">فقط کالاهای دارای گارانتی</label>
                                                     <div class="form-group">
-                                                    <input type="submit" value="اعمال فیلتر" class="col-12 text-center py-2">
+                                                        <input type="submit" value="اعمال فیلتر" class="col-12 text-center py-2">
                                                     </div>
                                                 </form>
                                             </div>
@@ -122,8 +122,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            
 
                             <div class="accordion filters-container mt-3">
                                 <div class="accordion-item">
@@ -134,15 +132,15 @@
                                     </h2>
                                     <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <div class="row" id="side-products">
+                                            <div class="row">
+                                               {% for product in last_products %}
                                                 <!-- Side Product -->
-                                                 <!-- {% for product in last_products %}
                                                 <div class="col-12 col-md-4 col-lg-12 px-0 mt-2">
                                                     <a href={% url 'product:product-detail' pk=product.id %}>
                                                         <div class="side-product">
                                                             <div class="row pl-3">
                                                                 <div class="col-3 pl-2">
-                                                                    <div class="image" style="background-image: url('{{product.img1.url}}')"></div>
+                                                                    <div class="image" style="background-image: url({{product.img1.url}})"></div>
                                                                 </div>
                                                                 <div class="col-9 pr-0">
                                                                     <h2>{{product.name}}</h2>
@@ -159,10 +157,8 @@
                                                         </div>
                                                     </a>
                                                 </div>
-                                                {% endfor %} -->
+                                                {% endfor %}
                                                 <!-- Side Product -->
-                                              
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -177,8 +173,8 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-2 pt-1 text-end">
                                             <span>
-                                                <a href={% url 'product:products-list' %} class="products-view-type active"><i class="fa fa-th-list"></i></a>
-                                                <a href={% url 'product:products' %} class="products-view-type"><i class="fa fa-th"></i></a>
+                                                <a href={% url 'product:products-list' %} class="products-view-type"><i class="fa fa-th-list"></i></a>
+                                                <a href={% url 'product:products' %} class="products-view-type active"><i class="fa fa-th"></i></a>
                                             </span>
                                             &nbsp;|&nbsp;
                                             <span>{{product_count}} کالا</span>
@@ -189,42 +185,26 @@
                             <!-- /Filters -->
                             <div class="mt-2" id="pager">
                                 <div class="container">
-                                    <div class="row row-cols-1 gx-md-4">
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-md-4">
                                         <!-- Products -->
                                          {% for product in products %}
                                         <div class="col">
                                             <!-- Product Box -->
-                                            <div class="product-box-row">
-                                                <div class="row">
-                                                    <div class="col-12 col-md-4">
-                                                        <a href={% url 'product:product-detail' pk=product.id %}><div class="image" style="background-image: url('{{product.img1.url}}')"></div></a>
+                                            <div class="product-box">
+                                                <a href={% url 'product:product-detail' pk=product.id %}>><div class="image" style="background-image: url({{product.img1.url}})"></div></a>
+                                                <div class="details p-3">
+                                                    <div class="category">
+                                                        <a href="#">{{product.category.parent}}/{{product.category.name}} </a>
+                                                        &nbsp;/&nbsp;
+                                                        
                                                     </div>
-                                                    <div class="col-12 col-md-8">
-                                                        <div class="details py-3 px-3">
-                                                            <div class="category">
-                                                                <a href="#">{{product.category.parent}}/{{product.category.name}} </a>
-                                                                &nbsp;/&nbsp;
-                                                                
-                                                            </div>
-                                                            <a href={% url 'product:product-detail' pk=product.id %}><h2>{{product.name}}</h2></a>
-                                                            <div class="rate">
-                                                                {% for star in product.get_average_score|times %}
-                                                                    <i class="fa fa-star"></i>
-                                                                {% endfor %}
-                                                                <span class="reviews">({{product.total_vots}} رای دهنده)</span>
-                                                            </div>
-                                                            <p>{{product.content}}</p>
-                                                            {% if product.has_discount %}
-                                                            <div>
-                                                                <span class="discounted">{{product.price}} تومان</span>
-                                                                <br class="d-sm-none">
-                                                                <span class="price">{{product.get_discounted_price|intcomma}} تومان</span>
-                                                            </div>
-                                                            {% else %}
-                                                            <div class="price">{{product.price}} تومان</div>
-                                                            {% endif %}
-                                                            <a href={% url 'product:product-detail' pk=product.id %}><div class="btn btn-sm btn-success">مشاهده و خرید</div></a>
-                                                        </div>
+                                                    <a href={% url 'product:product-detail' pk=product.id %}><h2>{{product.name}}</h2></a>
+                                                    <div class="price">{{product.price|intcomma}} تومان</div>
+                                                    <div class="rate">
+                                                        {% for star in product.get_average_score|times %}
+                                                        <i class="fa fa-star"></i>
+                                                        {% endfor %}
+                                                        <span class="reviews">({{product.total_vots}} رای دهنده)</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,64 +233,3 @@
 </section>
 
 {% endblock 'content'%}
-
-{% block 'scripts' %}
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Side products JS connected!");
-
-    const sideProductsContainer = document.getElementById("side-products");
-
-    async function fetchSideProducts() {
-        try {
-            // 🔹 Fetch products (you can add ?ordering=-created_at to get newest)
-            const response = await fetch("http://127.0.0.1:8000/products/api/v1/products?ordering=-created_at");
-            const data = await response.json();
-
-            // Clear old products
-            sideProductsContainer.innerHTML = "";
-
-            if (data.results && data.results.length > 0) {
-                data.results.slice(0, 5).forEach(product => { // show only 5 latest products
-                    const item = document.createElement("div");
-                    item.classList.add("col-12", "col-md-4", "col-lg-12", "px-0", "mt-2");
-                    item.innerHTML = `
-                        <a href="/products/product-detail/${product.id}">
-                            <div class="side-product">
-                                <div class="row pl-3">
-                                    <div class="col-3 pl-2">
-                                        <div class="image" style="background-image: url('${product.img1}');"></div>
-                                    </div>
-                                    <div class="col-9 pr-0">
-                                        <h2>${product.name}</h2>
-                                        <div class="row">
-                                            <div class="col-7 pl-0">
-                                                <span class="price">${product.price.toLocaleString()} تومان</span>
-                                            </div>
-                                            <div class="col-5 pr-0 text-end">
-                                                <span class="views">${product.total_views} بازدید</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    `;
-                    sideProductsContainer.appendChild(item);
-                });
-            } else {
-                sideProductsContainer.innerHTML = "<p class='text-center w-100'>محصولی یافت نشد</p>";
-            }
-
-        } catch (error) {
-            console.error("Error loading side products:", error);
-            sideProductsContainer.innerHTML = "<p class='text-danger text-center w-100'>خطا در بارگذاری محصولات</p>";
-        }
-    }
-
-    fetchSideProducts();
-});
-</script>
-
-{% endblock 'scripts' %}
